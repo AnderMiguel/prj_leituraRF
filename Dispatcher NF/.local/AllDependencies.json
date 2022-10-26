@@ -18764,9 +18764,9 @@
     "restore": {
       "projectUniqueName": "Dispatcher NF",
       "projectName": "Dispatcher NF",
-      "projectPath": "C:\\Users\\PC\\Documents\\UiPath\\prj_leituraNf\\Dispatcher NF\\.local",
+      "projectPath": "C:\\Users\\PC\\Desktop\\prj_leituraNf\\Dispatcher NF\\.local",
       "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\PC\\Documents\\UiPath\\prj_leituraNf\\Dispatcher NF\\.local"
+      "outputPath": "C:\\Users\\PC\\Desktop\\prj_leituraNf\\Dispatcher NF\\.local"
     },
     "frameworks": {
       "net6.0-windows7.0": {

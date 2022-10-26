@@ -1,0 +1,993 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="Process" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:p="http://schemas.uipath.com/workflow/activities/cv" xmlns:p1="http://schemas.uipath.com/workflow/activities/ocr" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Drawing;assembly=System.Drawing.Common" xmlns:sd1="clr-namespace:System.Drawing;assembly=System.Drawing.Primitives" xmlns:sd2="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:this="clr-namespace:" xmlns:uc="clr-namespace:UiPath.CV;assembly=UiPath.CV" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property sap2010:Annotation.AnnotationText="Transaction item to be processed." Name="in_TransactionItem" Type="InArgument(ui:QueueItem)" />
+    <x:Property sap2010:Annotation.AnnotationText="Dictionary structure to store configuration data of the process (settings, constants and assets)." Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
+    <x:Property Name="GoogleApp" Type="InArgument(ui:UiElement)" />
+    <x:Property Name="dbConnection" Type="InArgument(ui:DatabaseConnection)" />
+  </x:Members>
+  <this:Process.GoogleApp>
+    <InArgument x:TypeArguments="ui:UiElement" />
+  </this:Process.GoogleApp>
+  <this:Process.dbConnection>
+    <InArgument x:TypeArguments="ui:DatabaseConnection" />
+  </this:Process.dbConnection>
+  <VisualBasic.Settings>
+    <x:Null />
+  </VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>1474,6331</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>ProcessTransaction_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="106">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
+      <x:String>System.Windows.Forms</x:String>
+      <x:String>GlobalVariablesNamespace</x:String>
+      <x:String>GlobalConstantsNamespace</x:String>
+      <x:String>UiPath.UIAutomationNext.Enums</x:String>
+      <x:String>UiPath.UIAutomationCore.Contracts</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities</x:String>
+      <x:String>UiPath.Platform.ObjectLibrary</x:String>
+      <x:String>UiPath.Shared.Activities</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Security</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>UiPath.UIAutomationNext.Contracts</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities.Models</x:String>
+      <x:String>UiPath.Core.Activities.Orchestrator</x:String>
+      <x:String>UiPath.Database</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+      <x:String>UiPath.Database.Activities</x:String>
+      <x:String>UiPath.CV</x:String>
+      <x:String>UiPath.Shared.ObjectLibrary</x:String>
+      <x:String>UiPath.Vision.OCR</x:String>
+      <x:String>UiPath.OCR.Contracts</x:String>
+      <x:String>UiPath.CV.Activities</x:String>
+      <x:String>UiPath.OCR.Activities</x:String>
+      <x:String>UiPath.OCR.Contracts.Activities</x:String>
+      <x:String>UiPath.CV.Activities.Interfaces</x:String>
+      <x:String>UiPath.Excel</x:String>
+      <x:String>UiPath.Excel.Activities.Business</x:String>
+      <x:String>UiPath.Excel.Model</x:String>
+      <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="136">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.Windows.Forms</AssemblyReference>
+      <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities.Design</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
+      <AssemblyReference>UiPath.Workflow</AssemblyReference>
+      <AssemblyReference>System.Private.CoreLib</AssemblyReference>
+      <AssemblyReference>System.Console</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.TypeConverter</AssemblyReference>
+      <AssemblyReference>System.Private.Uri</AssemblyReference>
+      <AssemblyReference>System.Configuration.ConfigurationManager</AssemblyReference>
+      <AssemblyReference>System.ComponentModel</AssemblyReference>
+      <AssemblyReference>System.Security.Permissions</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Constants</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Platform</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Testing.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities</AssemblyReference>
+      <AssemblyReference>System.Reflection.DispatchProxy</AssemblyReference>
+      <AssemblyReference>System.Reflection.TypeExtensions</AssemblyReference>
+      <AssemblyReference>System.ObjectModel</AssemblyReference>
+      <AssemblyReference>System.Reflection.Metadata</AssemblyReference>
+      <AssemblyReference>System.Runtime.InteropServices</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.EventBasedAsync</AssemblyReference>
+      <AssemblyReference>Microsoft.Win32.Primitives</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Primitives</AssemblyReference>
+      <AssemblyReference>NPOI</AssemblyReference>
+      <AssemblyReference>System.IO.FileSystem.Watcher</AssemblyReference>
+      <AssemblyReference>System.IO.Packaging</AssemblyReference>
+      <AssemblyReference>System.IO.FileSystem.AccessControl</AssemblyReference>
+      <AssemblyReference>System.IO.FileSystem.DriveInfo</AssemblyReference>
+      <AssemblyReference>UiPath.Database</AssemblyReference>
+      <AssemblyReference>System.Private.Xml</AssemblyReference>
+      <AssemblyReference>UiPath.Database.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.CV</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Core</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Contracts</AssemblyReference>
+      <AssemblyReference>UiPath.CV.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext.Activities.Design</AssemblyReference>
+      <AssemblyReference>UiPath.Vision.Core</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.Data.Common</AssemblyReference>
+      <AssemblyReference>System.Data.SqlClient</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic.Forms</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Invoke major steps of the business process, which are usually implemented by multiple subworkflows.&#xA;&#xA;If a BusinessRuleException is thrown, the transaction is skipped. &#xA;If another kind of exception occurs, the current transaction can be retried. " DisplayName="Process" sap:VirtualizedContainerService.HintSize="674,6266" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="NomeQSA" />
+      <Variable x:TypeArguments="x:String" Name="QualificacaoQSA" />
+      <Variable x:TypeArguments="x:String" Name="SituacaoCNPJ" />
+      <Variable x:TypeArguments="x:String" Name="EtapaAtual" />
+      <Variable x:TypeArguments="x:String" Name="Status" />
+      <Variable x:TypeArguments="x:String" Name="Excecao" />
+      <Variable x:TypeArguments="sd2:DataTable" Name="dataBase_DATA" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="612,101" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Started Process&quot;]" />
+    <ui:Comment DisplayName="Comment (placeholder)" sap:VirtualizedContainerService.HintSize="612,65" sap2010:WorkflowViewState.IdRef="Comment_1" Text="//  Invoke steps of the process" />
+    <uix:NApplicationCard AttachMode="ByInstance" DisplayName="Use Application/Browser" sap:VirtualizedContainerService.HintSize="612,5688" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" InUiElement="[GoogleApp]" ScopeGuid="a54519b3-9420-4894-925b-201add1f44c0" Version="V2">
+      <uix:NApplicationCard.Body>
+        <ActivityAction x:TypeArguments="x:Object">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="578,5542" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="x:String" Name="LocalIgual" />
+            </Sequence.Variables>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <uix:NGoToUrl DisplayName="Go To URL" sap:VirtualizedContainerService.HintSize="516,91" sap2010:WorkflowViewState.IdRef="NGoToUrl_1" Url="https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/cnpjreva_solicitacao.asp" Version="V3" />
+            <uix:NTypeInto ActivateBefore="True" ClickBeforeMode="Single" DisplayName="Type Into 'CNPJ'" EmptyFieldMode="SingleLine" sap:VirtualizedContainerService.HintSize="516,227" sap2010:WorkflowViewState.IdRef="NTypeInto_1" InteractionMode="DebuggerApi" ScopeIdentifier="a54519b3-9420-4894-925b-201add1f44c0" Text="[in_TransactionItem.SpecificContent(&quot;CPF/CNPJ&quot;).ToString]" Version="V3">
+              <uix:NTypeInto.Target>
+                <uix:TargetAnchorable BrowserURL="https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/cnpjreva_solicitacao.asp" DesignTimeRectangle="95, 546, 530, 34" DesignTimeScaleFactor="1" ElementType="InputBox" FriendlyName="'INPUT cnpj'" FullSelectorArgument="&lt;webctrl id='cnpj' tag='INPUT' /&gt;" FuzzySelectorArgument="&lt;webctrl id='cnpj' tag='INPUT' type='text' class='form-control' aaname='CNPJ:' /&gt;" Guid="98e65bb3-aa9b-4da2-ae5b-c8a42306ed38" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAhYAAAAmCAYAAACYotJXAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADySURBVHhe7dYxCsJQAERB73+2NN5DAqnDJ5LGRiMxvnIGXrcH2Nv9sWySJElFjoUkScp6HYtpmiRJki718VjM8yxJkvRTh8diXddtjCFJknSq/TscHot9AABw1v4dHAsAIOFYAAAZxwIAyDgWAEDGsQAAMo4FAJBxLACAjGMBAGQcCwAg41gAABnHAgDIOBYAQMaxAAAyjgUAkHEsAICMYwEAZBwLACDjWAAAGccCAMg4FgBAxrEAADKOBQCQcSwAgIxjAQBkHAsAIONYAAAZxwIAyDgWAEDGsQAAMl+PhSRJ0pXejoUkSdK/ORaSJClq2Z7DpxEz81R3DwAAAABJRU5ErkJggg==" InformativeScreenshot="2dc114302e8f2c1ca01e9f33f548153c.png" IsResponsive="True" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Emissão de Comprovante de Inscrição e de Situação Cadastral' /&gt;" SearchSteps="FuzzySelector" Version="V1" Visibility="Interactive">
+                  <uix:TargetAnchorable.Anchors>
+                    <scg:List x:TypeArguments="uix:ITarget" Capacity="1">
+                      <uix:Target DesignTimeRectangle="95, 516, 42, 26" ElementType="Text" FriendlyName="'CNPJ'" FullSelectorArgument="&lt;webctrl tag='LABEL' /&gt;" FuzzySelectorArgument="&lt;webctrl tag='LABEL' type='' class='' aaname='CNPJ:' check:innerText='CNPJ:' /&gt;" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAC4AAAAeCAYAAABTwyyaAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIBSURBVFhH7ZaxSgNBEIZ9El8hlZWNlVW6NFZ5AJtUVmlsrKwCYkQF5QSNjQchWByCQfSKHIiCWAiKioiIxdwTjP+aXdzb2yO3IguBK37I7s7Nfjf372xmbr9SnkZV4L5VgftWBe5befCPlIMT4sVN4tkN4rkt4tXYiHkgXsJa58GYl2pjrafGMlbkUqohdytKOdGe0TWM8AxkW1MywIm7+8SNfsrx+3gueSJex9zyuZZIwtSOybp5DnyPeKit3z6PczYL4JzBkytU+MgCc4+X2SGO1FjCrAYAuNPipCaCC72hGKh879OYh5zBQ1ikdZkNGAuAAO8+yrGEia6J6wfEsRFfChw5O5i32c0Ej2+IB2pvqQy4sImtgkLJK6Sqo8EE+ELtUTb2v8F3D3HmYF89RgMvTpSTDiN+76L62if3bJU/gkNhP3t4yxzOjqWKSt7ARfVa28ShrF4OHGOzHS6f4mxYqi3kfDj/4nG1HgFEbVbO48VyBnftKhkY9P02qh68uYATryFvaMw7g4s+XkNvNttbUR83YWL4vA6/rziA2+wZ4GKzF/BXGXCRSNilKfyHq1/MFd6cNphPxKLDCB+XtcrwDJce8g9e5PgCh1Y7L0IT+/iPyv5XKYBJRsQLjh4fwBYNud88XqJnQE7o49OlCty3KnDfqsB9qwL3rSkFT/kbluxmCFP/G4gAAAAASUVORK5CYII=" SearchSteps="FuzzySelector, Image" />
+                    </scg:List>
+                  </uix:TargetAnchorable.Anchors>
+                </uix:TargetAnchorable>
+              </uix:NTypeInto.Target>
+            </uix:NTypeInto>
+            <ui:MessageBox Caption="{x:Null}" ChosenButton="{x:Null}" AutoCloseAfter="00:00:00" DisplayName="Message Box" sap:VirtualizedContainerService.HintSize="516,94" sap2010:WorkflowViewState.IdRef="MessageBox_2" Text="[&quot;Por favor solucione o CAPTCHA&quot;]" />
+            <ui:WaitUiElementAppear FoundElement="{x:Null}" WaitActive="{x:Null}" DisplayName="Espere enquanto não solucionar o captcha" sap:VirtualizedContainerService.HintSize="516,116" sap2010:WorkflowViewState.IdRef="WaitUiElementAppear_2" WaitVisible="True">
+              <ui:WaitUiElementAppear.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="7ba6c565-b638-4291-b3f8-c66708eb64ef" InformativeScreenshot="7d36017150366bdd4c7c246466d4fb58" Selector="&lt;html app='chrome.exe' title='Emissão de Comprovante de Inscrição e de Situação Cadastral' /&gt;&lt;webctrl src='https://newassets.hcaptcha.com/captcha/v1/1f7dc62/static/hcaptch*' tag='IFRAME' /&gt;&lt;webctrl tag='IMG' /&gt;">
+                  <ui:Target.TimeoutMS>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:Target.TimeoutMS>
+                  <ui:Target.WaitForReady>
+                    <InArgument x:TypeArguments="ui:WaitForReady" />
+                  </ui:Target.WaitForReady>
+                </ui:Target>
+              </ui:WaitUiElementAppear.Target>
+            </ui:WaitUiElementAppear>
+            <uix:NKeyboardShortcuts ActivateBefore="True" ClickBeforeMode="None" DisplayName="KeyCode Enter" sap:VirtualizedContainerService.HintSize="516,208" sap2010:WorkflowViewState.IdRef="NKeyboardShortcuts_1" ScopeIdentifier="a54519b3-9420-4894-925b-201add1f44c0" Shortcuts="[d(hk)][k(enter)][u(hk)]" Version="V3">
+              <uix:NKeyboardShortcuts.Target>
+                <uix:TargetAnchorable BrowserURL="https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/cnpjreva_solicitacao.asp" DesignTimeRectangle="293, 546, 650, 34" DesignTimeScaleFactor="1" ElementType="InputBox" FriendlyName="'INPUT cnpj'" FullSelectorArgument="&lt;webctrl id='cnpj' tag='INPUT' /&gt;" FuzzySelectorArgument="&lt;webctrl id='cnpj' tag='INPUT' type='text' class='form-control' aaname='CNPJ:' /&gt;" Guid="5d227585-b6b9-44dd-92e7-056db7c37e1d" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAo4AAAAmCAYAAABK3hpKAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEASURBVHhe7da7CYMAAEXR7D+bTfYIgrWIwRQW8XcHOAdu9wZ4r/dnWiVJkqSnHEdJkiSl9uM4DIMkSZJ06PQ4juMoSZIk7V0ex3me12VZJEmSpN83vDyO2wAAADbbN3QcAQB45DgCAJA4jgAAJI4jAACJ4wgAQOI4AgCQOI4AACSOIwAAieMIAEDiOAIAkDiOAAAkjiMAAInjCABA4jgCAJA4jgAAJI4jAACJ4wgAQOI4AgCQOI4AACSOIwAAieMIAEDiOAIAkDiOAAAkjiMAAInjCABA4jgCAJA4jgAAJI4jAACJ4wgAQHJ7HCVJkqT/DsdRkiRJustxlCRJUmhav9yHz7YVNd5jAAAAAElFTkSuQmCC" InformativeScreenshot="cf8d812659dc53a793f162da4447b28f.png" IsResponsive="True" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Emissão de Comprovante de Inscrição e de Situação Cadastral' /&gt;" SearchSteps="FuzzySelector" Version="V1" Visibility="Interactive">
+                  <uix:TargetAnchorable.Anchors>
+                    <scg:List x:TypeArguments="uix:ITarget" Capacity="1">
+                      <uix:Target DesignTimeRectangle="293, 516, 42, 26" ElementType="Text" FriendlyName="'CNPJ'" FullSelectorArgument="&lt;webctrl tag='LABEL' /&gt;" FuzzySelectorArgument="&lt;webctrl tag='LABEL' type='' class='' aaname='CNPJ:' check:innerText='CNPJ:' /&gt;" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAC4AAAAeCAYAAABTwyyaAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIBSURBVFhH7ZaxSgNBEIZ9EV8hlZWNlVW6NFZ5AJtUVqlsrKwCYkQF5QSNjQchWByCQfSKHIiCWAiKioiIxdwTjP+aXdzb2yO3IguBK37I7s7Nfjf372xmbr9SnkZV4L5VgftWBe5befCPlIMT4sVN4tkN4rkt4tXYiHkgXsJa58GYl2pjrafGMlbkUqohdytKOdGe0TWM8AxkW1MywIm7+8SNfsrx+3gueSJex9zyuZZIwtSOybp5DnyPeKit3z6PczYL4JzBkytU+MgCc4+X2SGO1FjCrAYAuNPipCaCC72hGKh879OYh5zBQ1ikdZkNGAuAAO8+yrGEia6J6wfEsRFfChw5O5i32c0Ej2+IB2pvqQy4sImtgkLJK6Sqo8EE+ELtUTb2v8F3D3HmYF89RgMvTpSTDiN+76L62if3bJU/gkNhP3t4yxzOjqWKSt7ARfVa28ShrF4OHGOzHS6f4mxYqi3kfDj/4nG1HgFEbVbO48VyBnftKhkY9P02qh68uYATryFvaMw7g4s+XkNvNttbUR83YWL4vA6/rziA2+wZ4GKzF/BXGXCRSNilKfyHq1/MFd6cNphPxKLDCB+XtcrwDJce8g9e5PgCh1Y7L0IT+/iPyv5XKYBJRsQLjh4fwBYNud88XqJnQE7o49OlCty3KnDfqsB9qwL3rSkFT/kbEhllqEVApKsAAAAASUVORK5CYII=" SearchSteps="FuzzySelector, Image" />
+                    </scg:List>
+                  </uix:TargetAnchorable.Anchors>
+                </uix:TargetAnchorable>
+              </uix:NKeyboardShortcuts.Target>
+            </uix:NKeyboardShortcuts>
+            <uix:NGetText ContinueOnError="True" DisplayName="Get Text 'SITUAÇÃO CADASTRAL'" sap:VirtualizedContainerService.HintSize="516,166" sap2010:WorkflowViewState.IdRef="NGetText_3" ScopeIdentifier="a54519b3-9420-4894-925b-201add1f44c0" TextString="[SituacaoCNPJ]" Timeout="2" Version="V3">
+              <uix:NGetText.Target>
+                <uix:TargetAnchorable BrowserURL="https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/Cnpjreva_Comprovante.asp" DesignTimeRectangle="164, 277, 30, 12" DesignTimeScaleFactor="1" FriendlyName="'ATIVA'" FullSelectorArgument="&lt;webctrl idx='12' tableRow='1' tag='TABLE' /&gt;&lt;webctrl tableRow='1' tag='B' /&gt;" FuzzySelectorArgument="&lt;webctrl tag='TABLE' /&gt;&lt;webctrl type='' tag='B' class='' /&gt;" Guid="45803432-0dd3-4d1e-8084-0f59541b7cbd" InformativeScreenshot="e0fdaa23cb7f89f45ceaa4c0fa7619cb.png" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Comprovante de Inscrição e de Situação Cadastral' /&gt;" SearchSteps="FuzzySelector" Version="V1" Visibility="Interactive">
+                  <uix:TargetAnchorable.Anchors>
+                    <scg:List x:TypeArguments="uix:ITarget" Capacity="2">
+                      <uix:Target DesignTimeRectangle="164, 268, 91, 9" FriendlyName="'SITUAÇÃO CADASTRAL'" FullSelectorArgument="&lt;webctrl idx='12' tableRow='1' tag='TABLE' /&gt;&lt;webctrl tableRow='1' tag='FONT' /&gt;" FuzzySelectorArgument="&lt;webctrl tag='TABLE' /&gt;&lt;webctrl type='' tag='FONT' class='' aaname=' &amp;#x9;&amp;#x9;SITUAÇÃO CADASTRAL &amp;#x9;&amp;#x9;' check:innerText='SITUAÇÃO CADASTRAL' /&gt;" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAF8AAAANCAYAAADPCrIJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAOhSURBVFhH7VbfZyNRFG7/zrJsnrZKh9BRMkJHiQkx8jDyUFnWWDrKmlgxpbK2JMT0IaaElMpS5qEMJfRhCN9+d3IzmfxqV9nmoflqNPfec+ec893vnDs72GJj2Nnd3cX22cyzceWHDQNG1YJeayGScx8FM/Kfh3DLKtSCAq3aRjjm3K0N/SpCdKVj79Ne5rER8M/+Fkz2CkjbCUJ4BQOtJzkUGAVwTuT7z3xE4v0JVtkOMrF4GD7L+QzCaxNaXoN6bMC9j+UsEN9YUM4HckQwrmncasmB/yjnBWIf1qGDwTSWcQT/TINSoO8TztPv2tzT8T60WjbGxXwWeMogJT+80GDfy0G/Dr1JInsmlMZMj0FVgZsGH8CsZl6ateV+o0Y1X4STMQNyjk0EMsCYttoPubbG1h/JYeRBP2lhOhSIuybUhrQfh3CFfcL/CN6pCasyHRP0Zfbkb9o6eSNdG13qMGtc704m4q4B/VouPnkkdZbfi7nfMB7Bl8BSPgu2GaTkx7cW9o9seL0hokzgbyE/qBpox0yU6klCCF3o58NkbRFLtn8cqAu2wq83CwN+ReyRgyweXRjcKw5nSugc+UTUUGDdJr/gshKGVL9Z8ZFYP3pQD0y41wOEC9W2lHu5jdHTiE+EwXcFhvS3lM+/kJ8gjjDsurAKOWiXzPYt5DMZ49BCq+vDK++j3ucaCdWnSs9ile1dHVrGp8C83xjtEpWdtq0ZwguFivPhd2y2I29SLSvIT8YPDpRTtqFuG/aRCm/aJsYxwr4Hp6QgdxZMDoVYyv3Y5l6Pe3MwO7IuV+XzOvkjtCt1BGnvoxpEqb9CvpV300sy7vDi7MQsZS0JJlHFgwutTFWNGUBBkiHAktYZULTKViTA9yZ3jsB4yDZkI1sLUUOTiU0wYJ92HwaoF6jkRI0j+DUFzgMX58gXB6ejxUDEHude+hb3BNvE8MKAl+bHdlaY+V0rPBHfF6qdlbIy99fJJ0L2uANuZr8yqAT7jmf+Ivnc0tSwX2SPrRlQiy5LWPTc+uwCo2u/rCWqint1tjWDtuz3Rzzo5xds+1SutNUPdZI01Z8Ee7dX5EVXsWCVVGhNVpW4py4zN4NQ9hkvXuaQK9JO+D1ke7ii7ZgHdZoRg7hn8oyFHwX1AzXp2WaR/3+tF94coazWXOU3fq7Mh7afNfoXMVhwejOv823nf0N88Xxtf7hPynV4V/LDGwd2c0BNbCHwvsrfYg5b8jcG4C9GleTZwS5EfAAAAABJRU5ErkJggg==" SearchSteps="FuzzySelector, Image" />
+                      <uix:Target DesignTimeRectangle="511, 184, 146, 15" FriendlyName="'chrome.exe Comprovante'" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAJIAAAAPCAYAAAAPg5YTAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAQwSURBVGhD7VZNa+NIEJ3fObCwYS5mYQSGiIBFDiMCRgEjfBA+GAeMWIgwBPkQZBgyENCAV2ExzhLQQFBgQIeAICCYg8DwtlpqyW3rg2Xi3T1ED9q41dVVXVWvq+sdWrQ4AFoitTgIWiK1OAhaIrU4CN4R2E872vG6wQnVIkUC70KBPtKhXa5p1uKfQiBShJuz93j/C43fFBgLH/GGLxGSOwPSpZ/+jz6rmVwxTKz3ZLZo1hteK9C+xHy2RfJoQzuRoXQpsbdh+o3ZNe8FffmYkvV7k9ZSsRTrqYqbiE8SD8ZHC75gN763oHL9k7tckFAl+004yyIoE2wTwh0qkHoy5HMbwQ/+nbDv3zZ2HSgjB77geil+PwLY56SzJ0EZugg39b4X8zTGwhn3/dmL06GwQyR7aNNvhnipQ5plCaQZnDMdxkCHJ0RxPZRgP/NJjUyj3o2PSd+A8clCbilDCOvURMCd98cqHFIQzSXoq+wbWYf+casXK11Y2z1bvFDTKqMv+cG+W5CHecVJSFaBzQ9QLesV5I9oXf0sEp+q2EAu9iO0U/l0d4V/0Vzfxiz2oHfztXL8wpkC8zH7j4cJ1Ovc22bf2XlYvBhK/uzJHgq1REoP23Wy+TPdyEtiOZGgOBBhh0g1Mo16ySnta0IBU2F9Txc5KLmjDuSpg/VThCRP4k8Riez3LQR0M/VBluDwiuw9sbV9lGWDS3lPVjg/w4Zk+25GnH1U+LdDJAI7Z5r0ivgl9wY6xyacVYBox0DZd+02RvxC49mH2dU4Gcv+/D9E4ocNZxLUmQfvqwn5xKG7k0EkUp1MvV66yecSjC+051pDZ7z/JFIgowDe3IDyQYFDdn6KSFRRpDML3tKFeUw39YWRQ91WEBEVsj71TGLiS3YTFxolqYxq/6qIxOa18UsiBEsbRu8IyiK3WvZd/p32LmjvrzrcfHOFP/89kZ7oEBfkPCvPPWI1YzsNbyQVt6tIVoNMrd4XB8rAzW7RSwi7l98iQuxCv2BdF8edDpX6jEYi0e2V5vksgdvX4JI+f6zAeuS3lfUg7FmlYCqLLdXT8r9KKmWTpQbpSmAdnV+eBnzCQP71JtseJI2FjbDGvx0ibQJYXba3Kn4x3MEE60IvVZVPN5xgDZeIztfhFbLO93+fSNTUaSN60/syjk5M+KxpZG+zEPSU5fx2FURqkKnTy5I3eeAiBJYwMbmsSe2cUs8w0iBTeffTJDQQiRpe55Qa2EFmR7miZ4Il6EysjtR7pYmjp3NMTyfrXwYK5DH1Sw2y/pQa3lRWTW+42EynCIk01OTq5KN2TNWT8lXnXzSnpvycdDG/PsgwH8ixuvjt6CXZb4weDA1EIvgXR9D/+Kvanz91HJ0y+2xYWAtmXwOBSG8P8crC5LZIR4tX4A0TKYQ3o0aWVYQWr8abrkgtDgXgb/l2tMj8HhVaAAAAAElFTkSuQmCC" SearchSteps="Image" TargetType="ImageBased" />
+                    </scg:List>
+                  </uix:TargetAnchorable.Anchors>
+                </uix:TargetAnchorable>
+              </uix:NGetText.Target>
+            </uix:NGetText>
+            <uix:NKeyboardShortcuts ActivateBefore="True" ClickBeforeMode="None" DisplayName="Keyboard Shortcuts 'REPÚBLICA FEDERATIVA'" sap:VirtualizedContainerService.HintSize="516,208" sap2010:WorkflowViewState.IdRef="NKeyboardShortcuts_2" ScopeIdentifier="a54519b3-9420-4894-925b-201add1f44c0" Shortcuts="[d(hk)][d(ctrl)]p[u(ctrl)][u(hk)]" Version="V3">
+              <uix:NKeyboardShortcuts.Target>
+                <uix:TargetAnchorable BrowserURL="https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/Cnpjreva_Comprovante.asp" DesignTimeRectangle="72, 496, 880, 780" DesignTimeScaleFactor="1" FriendlyName="'REPÚBLICA FEDERATIVA'" FullSelectorArgument="&lt;webctrl id='principal' tag='DIV' /&gt;" FuzzySelectorArgument="&lt;webctrl id='principal' tag='DIV' type='' class='' aaname='  &amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;  &amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9; &amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9; &amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9; &amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;       &amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;  &amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;' /&gt;" Guid="33ab4c00-c33b-4516-9b57-8c5f1b48fe2f" ImageBase64="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" InformativeScreenshot="f381763a52c310fbe6c552f7e67f3913.png" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Comprovante de Inscrição e de Situação Cadastral' /&gt;" SearchSteps="FuzzySelector" Version="V1" Visibility="Interactive" />
+              </uix:NKeyboardShortcuts.Target>
+            </uix:NKeyboardShortcuts>
+            <uix:NKeyboardShortcuts ActivateBefore="True" ClickBeforeMode="None" DisplayName="Keyboard Shortcuts" sap:VirtualizedContainerService.HintSize="516,188" sap2010:WorkflowViewState.IdRef="NKeyboardShortcuts_3" Shortcuts="[d(hk)][k(enter)][u(hk)]" Version="V3" />
+            <uix:NClick ClickType="Single" DisplayName="Click 'chrome.exe Salvar como'" sap:VirtualizedContainerService.HintSize="516,166" sap2010:WorkflowViewState.IdRef="NClick_3" InteractionMode="Simulate" KeyModifiers="None" MouseButton="Left" ScopeIdentifier="a54519b3-9420-4894-925b-201add1f44c0" Version="V3">
+              <uix:NClick.Target>
+                <uix:TargetAnchorable DesignTimeRectangle="466, 22, 58, 53" DesignTimeScaleFactor="1" FriendlyName="'chrome.exe Salvar como'" Guid="2657838d-db0e-4f52-a523-14bfc7a8223f" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAADoAAAA1CAYAAAAQ7fj9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACzSURBVGhD7dlBCsMgFEXRLN1NuChxBS7EZvjLg0ptqXTs9V0Q4jeTA5JJrjgkQ2kZSstQWobSMpSWobTOgbbW4oTlq0vLUFqG0jKUlqG0DKW1NbTWGr331+6dZjqb2xZaSomUUuScP7B61kxneme0LXQGDeyv2Wjrq/sNWyHV9h+jGbtCqu2hamBXSIWAKgFXSIWB/stQWobSMpSWobT8k4mWobQMpWUoras/7jhhHQK94wn/sXkuRXN9twAAAABJRU5ErkJggg==" InformativeScreenshot="716184784bc667c6c18ef01ec1d52088.png" ScopeSelectorArgument="&lt;wnd app='chrome.exe' cls='#32770' title='Salvar como' /&gt;" SearchSteps="Image" TargetType="ImageBased" Version="V1" Visibility="Interactive">
+                  <uix:TargetAnchorable.Anchors>
+                    <scg:List x:TypeArguments="uix:ITarget" Capacity="1">
+                      <uix:Target DesignTimeRectangle="532, 36, 33, 30" ElementType="Button" FriendlyName="'Atualizar &quot;Comprovante'" FullSelectorArgument="&lt;wnd cls='ToolbarWindow32' title='Barra de ferramentas da faixa de endereços' /&gt;&lt;ctrl name='Barra de ferramentas da faixa de endereços' role='tool bar' /&gt;&lt;ctrl name='Atualizar &amp;quot;Comprovante de Inscrição&amp;quot; (F5)' role='push button' /&gt;" FuzzySelectorArgument="&lt;wnd cls='ToolbarWindow32' title='Barra de ferramentas da faixa de endereços' /&gt;&lt;ctrl name='Barra de ferramentas da faixa de endereços' role='tool bar' /&gt;&lt;ctrl name='Atualizar &amp;quot;Comprovante de Inscrição&amp;quot; (F5)' role='push button' automationid='' check:text='Atualizar &amp;quot;Comprovante de Inscrição&amp;quot; (F5)' /&gt;" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAACUAAAAiCAYAAADYmxC7AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAELSURBVFhH7ZRLCoNADIZ7dNGFj72uPITu3OteV4KPA6gHcJv2Dyq1UkhLaGcxH0QymYgfk8EbGYiZUl3XkUnBUvx8sBf+iZWSYqWkWCkpVkqKmpTjOJf4FjWpqqqoKApK05Rc1zVDqq7rQyYIgpPUuq5bJkNFapomFoqiiN8vy/KQGseRJed55rUEFaksy1ii73teP0sNw8A5eqSoSMVxTL7vb6srOCn0SFGRSpKEP/wO7KFHiopUnuc8IozqlX186JGiIoVL7HkehWFIbdtuVeIcNez9/KKDpmlOvwQEctSw9wlqUmBZFh4T7g8C+ScntKMqpYWVkmKlpFgpKWZLITEpWIqfhmGgFNEdKrMTR++hi6oAAAAASUVORK5CYII=" SearchSteps="Selector, FuzzySelector, Image" />
+                    </scg:List>
+                  </uix:TargetAnchorable.Anchors>
+                </uix:TargetAnchorable>
+              </uix:NClick.Target>
+            </uix:NClick>
+            <uix:NGetText DisplayName="Get Text 'C:\Users\PC\Documents\U…'" sap:VirtualizedContainerService.HintSize="516,166" sap2010:WorkflowViewState.IdRef="NGetText_4" ScopeIdentifier="a54519b3-9420-4894-925b-201add1f44c0" TextString="[LocalIgual]" Version="V3">
+              <uix:NGetText.Target>
+                <uix:TargetAnchorable DesignTimeRectangle="139, 44, 360, 15" DesignTimeScaleFactor="1" ElementType="InputBox" FriendlyName="'C:\Users\PC\Documents\U…'" FullSelectorArgument="&lt;wnd ctrlid='41477' /&gt;&lt;wnd ctrlid='41477' /&gt;&lt;ctrl name='Endereço' role='editable text' /&gt;" FuzzySelectorArgument="&lt;wnd ctrlid='41477' /&gt;&lt;wnd ctrlid='41477' /&gt;&lt;ctrl name='Endereço' role='editable text' automationid='' /&gt;" Guid="ba9a057c-4898-4126-89d0-335833be477f" InformativeScreenshot="a2378cd00bdbb1f2762ff42370e6ce9a.png" ScopeSelectorArgument="&lt;wnd app='chrome.exe' cls='#32770' title='Salvar como' /&gt;" SearchSteps="Selector, FuzzySelector" Version="V1" Visibility="Interactive">
+                  <uix:TargetAnchorable.Anchors>
+                    <scg:List x:TypeArguments="uix:ITarget" Capacity="4">
+                      <uix:Target DesignTimeRectangle="503, 37, 28, 28" ElementType="Button" FriendlyName="'C:\Users\PC\Documents\U…'" FullSelectorArgument="&lt;wnd ctrlid='41477' /&gt;&lt;ctrl name='Endereço' role='combo box' /&gt;&lt;ctrl name='Endereço' role='push button' /&gt;" FuzzySelectorArgument="&lt;wnd ctrlid='41477' /&gt;&lt;ctrl name='Endereço' role='combo box' /&gt;&lt;ctrl name='Endereço' role='push button' automationid='' check:text='C:\Users\PC\Documents\UiPath\prj_leituraNf\Performer NF\Comprovante de Inscrição' /&gt;" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACESURBVFhH7ZKBCYAwDAQ7aAdxqQ7SCaRjZILIY0VREU2EKPxBICSFP0KTBpPSMGpUtdY07AIUoAAFKECB/wrUWnt35Gq3xyQgIppz1lJKn6xghh3e3MF8gTOJp+HA9Qe2EpZw4P6Ei4QlHLgFAIIt4eAVAQ8UoAAFKPAdATRRFXqBGdUJcio0Zo8YhRcAAAAASUVORK5CYII=" SearchSteps="Selector, FuzzySelector, Image" />
+                    </scg:List>
+                  </uix:TargetAnchorable.Anchors>
+                </uix:TargetAnchorable>
+              </uix:NGetText.Target>
+            </uix:NGetText>
+            <If Condition="[LocalIgual = Directory.GetCurrentDirectory + &quot;\Comprovante de Inscrição&quot;]" DisplayName="Verificar se o local é o mesmo para se gravar os dados" sap:VirtualizedContainerService.HintSize="516,853" sap2010:WorkflowViewState.IdRef="If_3">
+              <If.Then>
+                <Sequence sap:VirtualizedContainerService.HintSize="400,113" sap2010:WorkflowViewState.IdRef="Sequence_8">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </Sequence>
+              </If.Then>
+              <If.Else>
+                <Sequence sap:VirtualizedContainerService.HintSize="400,577" sap2010:WorkflowViewState.IdRef="Sequence_9">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <uix:NTypeInto ActivateBefore="True" ClickBeforeMode="Single" DelayAfter="0" DelayBefore="0" DisplayName="Adicionar caminho da pasta" EmptyFieldMode="SingleLine" sap:VirtualizedContainerService.HintSize="338,227" sap2010:WorkflowViewState.IdRef="NTypeInto_2" InteractionMode="HardwareEvents" ScopeIdentifier="a54519b3-9420-4894-925b-201add1f44c0" Text="[Directory.GetCurrentDirectory + &quot;\Comprovante de Inscrição&quot;]" Version="V3">
+                    <uix:NTypeInto.Target>
+                      <uix:TargetAnchorable DesignTimeRectangle="115, 36, 417, 30" DesignTimeScaleFactor="1" ElementType="InputBox" FriendlyName="'C:\Users\PC\Documents\U…'" FullSelectorArgument="&lt;wnd ctrlid='41477' /&gt;&lt;wnd ctrlid='41477' /&gt;" FuzzySelectorArgument="&lt;wnd ctrlid='41477' /&gt;&lt;wnd ctrlid='41477' /&gt;" Guid="1b7ed386-c175-4867-bc2f-220cd797ee4b" ImageBase64="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" InformativeScreenshot="0e791480926828b008abeae26d6a9979.png" ScopeSelectorArgument="&lt;wnd app='chrome.exe' cls='#32770' title='Salvar como' /&gt;" SearchSteps="Selector, FuzzySelector, Image" Version="V1" Visibility="Interactive">
+                        <uix:TargetAnchorable.Anchors>
+                          <scg:List x:TypeArguments="uix:ITarget" Capacity="4">
+                            <uix:Target DesignTimeRectangle="503, 37, 28, 28" ElementType="Button" FriendlyName="'C:\Users\PC\Documents\U…'" FullSelectorArgument="&lt;wnd ctrlid='41477' /&gt;&lt;ctrl name='Endereço' role='combo box' /&gt;&lt;ctrl name='Endereço' role='push button' /&gt;" FuzzySelectorArgument="&lt;wnd ctrlid='41477' /&gt;&lt;ctrl name='Endereço' role='combo box' /&gt;&lt;ctrl name='Endereço' role='push button' automationid='' check:text='C:\Users\PC\Documents\UiPath\prj_leituraNf\Performer NF\Comprovante de Inscrição' /&gt;" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACESURBVFhH7ZKBCYAwDAQ7aAdxqQ7SCaRjZILIY0VREU2EKPxBICSFP0KTBpPSMGpUtdY07AIUoAAFKECB/wrUWnt35Gq3xyQgIppz1lJKn6xghh3e3MF8gTOJp+HA9Qe2EpZw4P6Ei4QlHLgFAIIt4eAVAQ8UoAAFKPAdATRRFXqBGdUJcio0Zo8YhRcAAAAASUVORK5CYII=" SearchSteps="Selector, FuzzySelector, Image" />
+                          </scg:List>
+                        </uix:TargetAnchorable.Anchors>
+                      </uix:TargetAnchorable>
+                    </uix:NTypeInto.Target>
+                  </uix:NTypeInto>
+                  <uix:NKeyboardShortcuts ActivateBefore="True" ClickBeforeMode="None" DisplayName="Keyboard Shortcuts" sap:VirtualizedContainerService.HintSize="338,188" sap2010:WorkflowViewState.IdRef="NKeyboardShortcuts_5" Shortcuts="[d(hk)][k(enter)][u(hk)]" Version="V3" />
+                </Sequence>
+              </If.Else>
+            </If>
+            <uix:NTypeInto ActivateBefore="True" ClickBeforeMode="None" DisplayName="Adicionar nome do prestador" EmptyFieldMode="SingleLine" sap:VirtualizedContainerService.HintSize="516,227" sap2010:WorkflowViewState.IdRef="NTypeInto_3" InteractionMode="HardwareEvents" ScopeIdentifier="a54519b3-9420-4894-925b-201add1f44c0" Text="[in_TransactionItem.SpecificContent(&quot;CPF/CNPJ&quot;).ToString.Replace(&quot;/&quot;,&quot;&quot;) + &quot; Comprovante&quot;]" Version="V3">
+              <uix:NTypeInto.Target>
+                <uix:TargetAnchorable DesignTimeRectangle="136, 369, 631, 17" DesignTimeScaleFactor="1" ElementType="InputBox" FriendlyName="'Comprovante de'" FullSelectorArgument="&lt;wnd aaname='Painel do Explorer' cls='DirectUIHWND' /&gt;&lt;wnd aaname='Nome:' cls='ComboBox' /&gt;&lt;wnd ctrlid='1001' /&gt;" FuzzySelectorArgument="&lt;wnd aaname='Painel do Explorer' cls='DirectUIHWND' /&gt;&lt;wnd aaname='Nome:' cls='ComboBox' /&gt;&lt;wnd ctrlid='1001' /&gt;" Guid="22b98760-61a5-4242-8b6b-6d0e55704880" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAnsAAAAVCAYAAAA+VSiUAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAATbSURBVHhe7ZyLsaM6DEBf6kpBtEM1t5lbDM/yB2QjGZLgbCb3nJnsxlgfS4ClJcn+twAAAADA10KzBwAAAPDF0OwBAAAAfDE0ewAAAABfDM0eAAAAwBdz0Oz9LvP9ttxu+XWfwxE45meZbvdlPp0skZ/CnwP5nZf7mTVFudsyyWJ+5gdieJZHcxX4mbZrsuTtbHxXcEmOXr23nsjbS1zhr7FRziP7CgDAUPxmTxe0Qjg2D+1IPoEBRe0QkR/c7J3kd57jOn4m1UgN5cFcxetSrcu8Jq84hz4v5+iSe+vZGN+tp9E25H2TAwAAGILT7KWnDn9zI766qJ1B5D+j2Xs/D+ZKngYdPgm64hyO4qp769kY362n0TY++RwBAHwXdrPXPj2xyE8nysdQW/HKm/jPNi9zv/N9lb2vO/xetp2bJtHLazF9GsVTNQTp6Ut+rULZ77x9HJj8ynFDvvLr5EXJ3Oc52S+hHOqL33LcW5tQf/S3xWwdb/OX7RZTji07XwH3fDe8JVc6J4USX5ov60wxtLHXYzfmETmKMk5eMmfst3mzddr1+7nR95ltq81hIR837+GAueZ6HftzCQAAV+I3e92nJ2mz3mqKbOilEOSNvOjn7+WsG3ocl2LXyBp2tkLQ8Sk21wkZWoVW9Js1FqHdmoqc0IyDrN1obD5TY6t9ndFvcmKtrYkzkQq6t6Y6f2Udno5Gyydbq+vqPGm0jgxH5ErYmpgtHe169fqOxgV9fFCO5Pjhk8mCb7/Om0bpmNeLtikku3acrX/PX/8ePnWuAQBgGM892TPmtwar3cR74/2G79o59KmaJV1MY7OUGgO/0Oix5bfo51dbQEWmKuDKxhn9KK/W760t26oKs5GXxJEdSydg5cuQNxvqM7GKzEu5UmT5JKLj7cQeacYnY155OUeO3YJn38tbHHprahu5o9wELFuWXGR/fI27u2bPHgAAXM1z39nrFrZ2E++N2zntt5nr+pTpeyxq5e98UOmIbc9vZ02G3x29onZGP8oXmd7aEukJiSqopv2OHU+nOq7yZcg/3ciIzEu5qom5iAvR8XZij3g++zFHHpA3cxR1rOOZnv1TeVM6mep60XqRZuzaavUK7XEVX2/Nrj0AALgap9kL5H/dV0UpbN7pF4OyUau5qkC0m3hvnOzYzZml5/kMxMIyLVN4rcckhlJsorz221vT3m/9dKSlXlsqrtreGf2z+UtsTW0qrnv7PTuOTjdfndyvJLmhuar+qxMdh45PvxdUAyLEazvPuzGPylEg+leyQpCP99ZJ+1XeXJ2N7Xppc9OMu/699ypPVdxpzj/Xyi8AAAzDb/aEuHGXj3PCqxQBoZrTm3a7iffG6X36cniytRVAoxi4PoVUnOuP/fIxkY+NYO3XXlMYTVlnq1J1HiofmVzA5dX/0YGlL/5PNHvKR/3jBZHZ7CfzHTsRS8fLl0z1cq94S66s+Tq+3TnUuZtCbKtsJ+ZRORLaONd7q2PfzZuj41wvdW7a68Lzr+X27+17OOCuufULAACj6Dd7w2HD/6fkhqP7JO2vQ44O4B4GAPh0aPb+POEcVI9iYA858uEeBgD4dGj2/jDl4zz6GB9ydAT3MADAp/OPmz0AAAAAGAnNHgAAAMAXQ7MHAAAA8MXQ7AEAAAB8LcvyPxvN0IGg0e3iAAAAAElFTkSuQmCC" InformativeScreenshot="a40ea6f431895e2b8cdc1345f8fec273.png" IsResponsive="True" ScopeSelectorArgument="&lt;wnd app='chrome.exe' cls='#32770' title='Salvar como' /&gt;" SearchSteps="FuzzySelector" Version="V1" Visibility="Interactive">
+                  <uix:TargetAnchorable.Anchors>
+                    <scg:List x:TypeArguments="uix:ITarget" Capacity="1">
+                      <uix:Target DesignTimeRectangle="18, 366, 115, 23" ElementType="Text" FriendlyName="'Nome'" FullSelectorArgument="&lt;wnd aaname='Painel do Explorer' cls='DirectUIHWND' /&gt;&lt;ctrl name='Painel do Explorer' role='pane' /&gt;&lt;ctrl name='Painel de Layout de Pastas' role='pane' /&gt;&lt;ctrl name='Painel de Detalhes' role='pane' /&gt;&lt;ctrl name='Nome:' role='text' /&gt;" FuzzySelectorArgument="&lt;wnd aaname='Painel do Explorer' cls='DirectUIHWND' /&gt;&lt;ctrl name='Painel do Explorer' role='pane' /&gt;&lt;ctrl name='Painel de Layout de Pastas' role='pane' /&gt;&lt;ctrl name='Painel de Detalhes' role='pane' /&gt;&lt;ctrl name='Nome:' role='text' automationid='' check:text='Nome:' /&gt;" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAHcAAAAbCAYAAABGDxCrAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEuSURBVGhD7ZbZDcMgEERDVdRDHS6AYuiFWtzBxgs+OBzLQrKiTCbSk7ID3o88s+E1z7MQTCgXGMoFZJqmBOUComL1Q7mAUC4wlAsM5QJDucBQ7jBBnDFiXDjJrfhYZt+BcofJEq014kKfU+5Ps0oMfhHsJbY55f4yh8TgjFgfuzzVcZGv43vlOOXFy1GsRW/3vUfPto+ToFlwYqoXq4ZyhyklXn0vhCZB9douR0WVQlO9Sqx65rW0j3Kfov/B8+WqyJPMTVBGT3mW3Tx/VTenP9Fd5Hood5hWRhSfLldPya373IFyh2llLOwnbMt1TzuWP4zayzr3qf6DFY7lp2hlZPKFqMirkXpX5kld9VnQsUy5/wvlAkO5wFAuMJQLDOUCQ7nAqFyFcoGhXFhmeQMjLLwdfqIQDgAAAABJRU5ErkJggg==" SearchSteps="Selector, FuzzySelector, Image" />
+                    </scg:List>
+                  </uix:TargetAnchorable.Anchors>
+                </uix:TargetAnchorable>
+              </uix:NTypeInto.Target>
+            </uix:NTypeInto>
+            <uix:NKeyboardShortcuts ActivateBefore="True" ClickBeforeMode="None" DisplayName="Keyboard Shortcuts" sap:VirtualizedContainerService.HintSize="516,188" sap2010:WorkflowViewState.IdRef="NKeyboardShortcuts_6" Shortcuts="[d(hk)][k(enter)][u(hk)]" Version="V3" />
+            <uix:NMouseScroll KeyModifiers="{x:Null}" Direction="Down" DisplayName="Scroll até o final da pag" sap:VirtualizedContainerService.HintSize="516,266" sap2010:WorkflowViewState.IdRef="NMouseScroll_1" InteractionMode="HardwareEvents" MovementUnits="10" ScopeIdentifier="a54519b3-9420-4894-925b-201add1f44c0" Version="V3">
+              <uix:NMouseScroll.SearchedElement>
+                <uix:SearchedElement>
+                  <uix:SearchedElement.Target>
+                    <uix:TargetAnchorable BrowserURL="https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/Cnpjreva_Comprovante.asp" DesignTimeRectangle="150, 488, 73, 31" DesignTimeScaleFactor="1" ElementType="Button" FriendlyName="'Imprimir'" FullSelectorArgument="&lt;webctrl id='print' tag='BUTTON' /&gt;" FuzzySelectorArgument="&lt;webctrl id='print' tag='BUTTON' type='' class='btn btn-info' aaname='Imprimir' check:innerText='IMPRIMIR' /&gt;" Guid="27cf750c-7626-4ef2-a2c7-118d0e3d9ec2" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAE0AAAAjCAYAAADR94eaAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIMSURBVGhD7Za9TsMwFEZ5O14iL8HOylMwd2FiQUIsdGHoVCFUgSpEkQC1BEJSitMmKflwnMR1oIH4qkFC3Csd1XFs3/rIP9kCh3WwNEJoadvHQ+YbzKhIc7o3zBpYGgGWRoClEWBpBFgaAZZGgKURYGkENiqt479D+J4uI41wVGnjY7iUg4vXVRsj4rlAp5e3PRVFZRbpOx7cZ+wUfWxyONchRBKiU5bzEVXEiwWOLsy+zWhXmozRndFmtECcVRrSyvZOz8VZKCcSvKjnTNrDOO+3K/sJJDg7t8/xRVpZ/pTPhlalBdES8dSvvk/kRNdJyxjL6RbvTGlO18NA9htc2+eolZZh5LOhVWliFiFYLnCg3j+hH6UYBqs/aranrrSfcvy5lSb8V71CnEuhJnc4SSrSzIjnoT5jKmcaUozuJ6QcX6QVI6qIVmeoDS1L89Rv4D1hz03UNsqe1660T+iV1ptilC7Rv8rrbXPUrbR9T94Ws6m6XMqcTWldmvqjUYjBXG6b27zeSposH05TvY1sc9RJc87f4BZbXrWzoH1p3Zf8EyDbNkW9rTR1I8pPixO5lWxz1ErrjtWZlq3QMmdTfkFavlIwC3S9tTR1wAPu49g6R720G+zcy0H1JdKcjUr7L7A0AiyNAEsjwNIIsDQCLI0ASyPA0giwNAIsjcC30ph6zNDSOJoHS7MO4AOtx9twr/2/vgAAAABJRU5ErkJggg==" InformativeScreenshot="b8c74cbf5cf97587aa469ff3f4b99917.png" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Comprovante de Inscrição e de Situação Cadastral' /&gt;" SearchSteps="FuzzySelector" Version="V1" Visibility="Interactive">
+                      <uix:TargetAnchorable.Anchors>
+                        <scg:List x:TypeArguments="uix:ITarget" Capacity="1">
+                          <uix:Target DesignTimeRectangle="150, 546, 537, 18" FriendlyName="'A RFB'" FullSelectorArgument="&lt;webctrl class='corpoRodape' tag='SPAN' /&gt;" FuzzySelectorArgument="&lt;webctrl class='corpoRodape' tag='SPAN' type='' aaname='A RFB agradece a sua visita. Para informações sobre política &amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;de privacidade e uso, .&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9; &amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;' /&gt;" ImageBase64="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" SearchSteps="FuzzySelector" />
+                        </scg:List>
+                      </uix:TargetAnchorable.Anchors>
+                    </uix:TargetAnchorable>
+                  </uix:SearchedElement.Target>
+                  <uix:SearchedElement.Timeout>
+                    <InArgument x:TypeArguments="x:Double" />
+                  </uix:SearchedElement.Timeout>
+                </uix:SearchedElement>
+              </uix:NMouseScroll.SearchedElement>
+              <uix:NMouseScroll.Target>
+                <uix:TargetAnchorable BrowserURL="https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/Cnpjreva_Comprovante.asp" DesignTimeRectangle="150, 256, 1060, 26" DesignTimeScaleFactor="1" ElementType="Text" FriendlyName="'Comprovante de'" FullSelectorArgument="&lt;webctrl tag='H2' /&gt;" FuzzySelectorArgument="&lt;webctrl tag='H2' type='' class='' aaname='Comprovante de Inscrição e de Situação Cadastral' check:innerText='Comprovante de Inscrição e de Situação Cadastral' /&gt;" Guid="6717f8ee-4680-4414-ba27-2087c1fb1bed" ImageBase64="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" InformativeScreenshot="30899cc9e76234e9e1f59d3ec7bb8aea.png" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Comprovante de Inscrição e de Situação Cadastral' /&gt;" SearchSteps="FuzzySelector, Image" Version="V1" Visibility="Interactive" />
+              </uix:NMouseScroll.Target>
+            </uix:NMouseScroll>
+            <p:CVScope ContinueOnError="{x:Null}" DelayBefore="{x:Null}" ScopeId="{x:Null}" Server="{x:Null}" CvMethod="ElementDetection, OCR" DesignTimeCacheId="35f796d4-1c05-45cd-b27c-34552a914501" DisplayName="CV Screen Scope 'DIV'" sap:VirtualizedContainerService.HintSize="516,1694" sap2010:WorkflowViewState.IdRef="CVScope_1" SendOnPremData="False" Version="V5">
+              <p:CVScope.Body>
+                <ActivityAction x:TypeArguments="x:Object">
+                  <ActivityAction.Argument>
+                    <DelegateInArgument x:TypeArguments="x:Object" Name="CVSessionData" />
+                  </ActivityAction.Argument>
+                  <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                    <Sequence.Variables>
+                      <Variable x:TypeArguments="x:Boolean" Name="achou" />
+                    </Sequence.Variables>
+                    <p:CvElementExistsWithDescriptor DelayScreenshotAfterScroll="{x:Null}" Descriptor="[&quot;Target: Button (39,585,125,34)&quot; +&#xA;&quot;Anchor: Icon (49,592,21,18)&quot; +&#xA;&quot;Anchor: Text 'CONSULTAR QSA' (72,595,80,13)&quot;]" DesignTimeCacheId="f0d745ef-bd1b-4504-93d3-443e7a2da82f" DesignTimeScaleFactor="1" DisplayName="CV Element Exists - Button" sap:VirtualizedContainerService.HintSize="482,146" sap2010:WorkflowViewState.IdRef="CvElementExistsWithDescriptor_1" InformativeScreenshot="becd42d6b352fc81ebe2cc2a1e2cdb07" NumberOfScrolls="2" Result="[achou]" ScrollDirection="Down" TimeoutMS="2" Version="V5">
+                      <p:CvElementExistsWithDescriptor.DesignTimeDescriptor>
+                        <uc:CvDescriptor Id="be68efda-492c-42c8-84cb-598e03005073">
+                          <uc:CvDescriptor.Anchors>
+                            <x:Array Type="uc:CvElementDescriptor">
+                              <uc:CvElementDescriptor CellExtraInfo="{x:Null}" DesignTimeArea="49, 592, 21, 18" ElementType="Icon" />
+                              <uc:CvElementDescriptor CellExtraInfo="{x:Null}" DesignTimeArea="72, 595, 80, 13" ElementType="Text" Text="CONSULTAR QSA" />
+                            </x:Array>
+                          </uc:CvDescriptor.Anchors>
+                          <uc:CvDescriptor.Target>
+                            <uc:CvElementDescriptor CellExtraInfo="{x:Null}" DesignTimeArea="39, 585, 125, 34" ElementType="Button" />
+                          </uc:CvDescriptor.Target>
+                        </uc:CvDescriptor>
+                      </p:CvElementExistsWithDescriptor.DesignTimeDescriptor>
+                    </p:CvElementExistsWithDescriptor>
+                    <If Condition="[achou = true]" sap:VirtualizedContainerService.HintSize="482,1165" sap2010:WorkflowViewState.IdRef="If_2">
+                      <If.Then>
+                        <Sequence sap:VirtualizedContainerService.HintSize="400,700" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <uix:NClick ClickType="Single" DisplayName="Click 'Consultar QSA'" sap:VirtualizedContainerService.HintSize="338,166" sap2010:WorkflowViewState.IdRef="NClick_2" InteractionMode="Simulate" KeyModifiers="None" MouseButton="Left" ScopeIdentifier="a54519b3-9420-4894-925b-201add1f44c0" Version="V3">
+                            <uix:NClick.Target>
+                              <uix:TargetAnchorable BrowserURL="https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/Cnpjreva_Comprovante.asp" DesignTimeRectangle="150, 487, 124, 31" DesignTimeScaleFactor="1" ElementType="Button" FriendlyName="'Consultar QSA'" FullSelectorArgument="&lt;webctrl tag='BUTTON' /&gt;" FuzzySelectorArgument="&lt;webctrl tag='BUTTON' type='' class='btn btn-primary' aaname=' &amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9; Consultar QSA' check:innerText='CONSULTAR QSA' /&gt;" Guid="1a848b38-a7ee-496d-81cc-eb825905241e" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAIAAAAAjCAYAAABctgKLAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAT9SURBVHhe7VjNaiM5EN432oufwy+wt73lMn6A9Sm3HEJOvk1ySJYhYRjIsIQ+hIQQnOzQmMHGGCdO7GR+bIJp/NMmmdjBfFslqd3qdnvHZnpnD1LBBy21pC5VfVUq9S+wYrRYAhguMwL8+upPC4MQSIQAmT8cCwNgCWA4LAEMhyWA4bAEMByWAIbDEsBwWAIYjv+UALnzLlqDCfzBCMXzUuIYi/8XKRLgDGtvysgVZDt72sdYrSdlisrpmRxbKCH/xkU2Mj9ACQdfJ2oO4H/9hJx6l33fQetRvRg/wdVIddilrs+34ZpHHvxvHrZEu4S9+2c1cYp2806uGRnD+IIWRjice1eH+01N16X7Rc07w0GH2p071ZbYaob7wHQK7159N4L5/eY3w3eJegd414WHZxTfan0rIjUCbN2oTbyQAXcc7LFB4sIG2iEjv8imf1OfW2e9Tht+9FBgIhUaqJDhry6ZONIJ7VoNvzHZiGA+nuDQt3geEwDUPtlVa+kOLA6JHUPsvaZ19DWXJkAIdqrfjOt9hyve07iPba1fH5vd76BNJKgc6/McrFWexH63hW41FAeAV6/K94v0VnPzbCuSdtWd9a2KlAjwNxxPTeZIp01uf56qdigcoZljLTN4HfweWacGlyL8qhj2iShi4vxFDokY2MVJD2iVZJsJ4PnPYRbQHCgMRd8KskPe7aPiltMjAGe7ngfXjzo4PpZ1DPSVkHuIOJCd7neRp+eFeos2z6XvNYcY05g1NWZVpJYBZHqehGlqN4x0IZwZRHRSWms+wX8cwXkfslniFpXxBO6R3qdQGgExh7BBAwML4378RJGosoLuQH6eTug9Z49wfloEYLJ79fLcO72dnAE4q9F+Ha1vGb0ZOw+0HmWHTdJ5SjrPjo3VkBIBLrBx2YHzUWIvcCyltIPqA07IMRtBbbB/i0M1zrmMb4wd8AMEoOhav6YscN+Yc2Du3EObU49u0FQIQKl5TI49pWeOXm0Oj9XFu67H6h5FAH2/y+hNEEdH74Eiv4yiz3uPB9NySIUAQplA+DxzOqj0yFCDIYrC2V1c8W2g14fj3Io0H0i7op9fCQYJsCQBMpsqC5wmOZBqB4cihzJTq0TfTYMAPI4jkZ85GrWiLBxbFU7Sz2+J72SAGWJ6U5v3y1mH3wuixQrQZZEKAUKm0+aPSVHVShYaQ9fDoGSIRlNyDSBqhyVqgOBZZAGPjhllyEJtpJ2das2ELJF5y3qtRgD+Vlx0xwRj16oUJHNn9YIagIJog54X6s0kj5dYAQlXRCoEyOw2ZFr/UEchuA38i/g3DWx9kMfA9rvoWuIWMOiKIyP7mmqCFW4BswIrMJByYLTSbgiSCSft0LlMR07l+ILmXWC9RuOoAFvnNZYigEy/ehYTjhapOTZWfIvIH9tv/BbAhPCu5S1god7idtBHYbYO107qGJr1LYd0CKCBN/09iUZ9DJvl8F5MRZN+9438B3h5RiX2H2BGAILQY+ZAWXiSjYT43QdsqKIpdzmkFC77oRemTADVLUUeTVGncrYLSRjvi5JF/isQERyMFdDv+iRc0Kl6aZHeXHTG10nqWwapEyBzxE4iZUjrRLCRk854C0KJSELEDbLQT0D6BLD4QZSQ31dZ6CfAEsBwWAIYDksAw2EJYDgsAQyHJYDhsAQwHJYAhsMSwHAsJICFOQhkRgArZoolgNEC/AMGWk3tDiXixgAAAABJRU5ErkJggg==" InformativeScreenshot="f5681a7f85b3c34ff090b17c49689a53.png" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Comprovante de Inscrição e de Situação Cadastral' /&gt;" SearchSteps="FuzzySelector, Image" Version="V1" Visibility="Interactive">
+                                <uix:TargetAnchorable.Anchors>
+                                  <scg:List x:TypeArguments="uix:ITarget" Capacity="1">
+                                    <uix:Target DesignTimeRectangle="278, 487, 78, 31" ElementType="Button" FriendlyName="'Voltar'" FullSelectorArgument="&lt;webctrl name='voltar' tag='BUTTON' /&gt;" FuzzySelectorArgument="&lt;webctrl name='voltar' tag='BUTTON' type='' class='btn btn-secondary' aaname=' &amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9; Voltar' check:innerText='VOLTAR' /&gt;" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAFIAAAAjCAYAAAAHUl3/AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAL8SURBVGhD7ZfBaxpBFMb7D3vNsXjMKVAPTUgPCkFCK2gJIRhiQhNECouUhUiwJIZGEonIgjEoVeTrm9l57uyqxc2s0Mp88MHuzJtZ97dv3ozvYJWILMiENAOZ2npv/QazLEhDsyxIQ7MsSEOzLEhDsyxIQ7MsSEOzLEhDswxAllC776LllGZt6b1D5E6+o3ZxjFz2oxa7uWYZgKyjIwY+15Euuui8ymnCeu3C+brZQFnmIIcjDOUMdOk94Lruwqk30fJGqnWEdvUgMraA6xeg52a1NjHfCM0jcX2A81sP46k/w7Dj4su2H1e8pefdltWYMpr8cF30cf3+HVw+0v1jVd0Hc8w0naB/X8Wu1h/HLHOQUgTgdD7ztk/vfMiTLmr74b5cY+BnM7edPWD8+wFlus44XaL3hPP8DlIfSnB6wPi+IuPCIAMvbq+iPaHnq3kXxabzLnoEs3Wqj1vdrIRABmpfheN2XU+292+CWip9RJCnBEvdyyxRmVOjiUPZKiAP71BUcSuDFOO8OzRfwqCisbVnoOME/XHMMgBZRWs4oSzSPaDMjMRtK+BeAxm9fesbWjSmdSau/aXerlIGquUaejEBHZTVdB0HZPkXLdtGYa5Pv/8HMnJVqzqmMkrvEy86/HmM1H4DPQFK1sGkQFaCD3X1FHq+iNXVvykHJSamWesHuTQjyeIFqX1X1MRZf0Ig9dIhf8MA14fR2JK2EtS4mGatHeTSGiksXnDaRZt2Vr0mJlEj8ze0mUUklnk0NiN+X8+d/8grmpUMyGwF5QXnxb/t2r6zckeGli3C5ru2Ol79CD6GBKayPhS7TzVSPP9zMFccsxIASZuGOGKQlp0jm8fLl458wbn6GTlHPjdC58iQFmWqrLkeHP3jaW1h6P5Zkz9UXLMSyUjxz6ZNR4w5iX82xbfXn//BrERrJP/Xvjwp4NPeZgNks9a+2Wy6WRakoVkWpKFZFqShWRakoVkWpKFZFqShWRakoVkWpKFZFqShWTOQVmayIBMR8Acpks52FM/0aAAAAABJRU5ErkJggg==" SearchSteps="FuzzySelector, Image" />
+                                  </scg:List>
+                                </uix:TargetAnchorable.Anchors>
+                              </uix:TargetAnchorable>
+                            </uix:NClick.Target>
+                          </uix:NClick>
+                          <uix:NGetText DisplayName="Variavel NomeQSA" sap:VirtualizedContainerService.HintSize="338,166" sap2010:WorkflowViewState.IdRef="NGetText_1" ScopeIdentifier="a54519b3-9420-4894-925b-201add1f44c0" TextString="[NomeQSA]" Version="V3">
+                            <uix:NGetText.Target>
+                              <uix:TargetAnchorable BrowserURL="https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/Cnpjreva_qsa.asp" DesignTimeRectangle="419, 533, 782, 26" DesignTimeScaleFactor="1" ElementType="Text" FriendlyName="'RODOLFO DE SIQUEIRA BRAZ'" FullSelectorArgument="&lt;webctrl class='col-md-9' parentid='principal' tag='DIV' /&gt;" FuzzySelectorArgument="&lt;webctrl class='col-md-9' parentid='principal' tag='DIV' type='' /&gt;" Guid="53f19ea2-1855-4ac6-85fc-7ee139209050" InformativeScreenshot="b3a6aae4064306cb88292618450eb1cf.png" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Consulta Quadro de Sócios e Administradores - QSA' /&gt;" SearchSteps="FuzzySelector" Version="V1" Visibility="Interactive">
+                                <uix:TargetAnchorable.Anchors>
+                                  <scg:List x:TypeArguments="uix:ITarget" Capacity="1">
+                                    <uix:Target DesignTimeRectangle="150, 457, 1060, 26" ElementType="Text" FriendlyName="'O Quadro'" FullSelectorArgument="&lt;webctrl tag='P' /&gt;" FuzzySelectorArgument="&lt;webctrl tag='P' type='' class='' aaname='O Quadro de Sócios e Administradores(QSA) constante da base de dados do Cadastro Nacional da Pessoa Jurídica (CNPJ) é o seguinte:' check:innerText='O Quadro de Sócios e Administradores(QSA) constante da base de dados do Cadastro Nacional da Pessoa' /&gt;" ImageBase64="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" SearchSteps="FuzzySelector, Image" />
+                                  </scg:List>
+                                </uix:TargetAnchorable.Anchors>
+                              </uix:TargetAnchorable>
+                            </uix:NGetText.Target>
+                          </uix:NGetText>
+                          <uix:NGetText DisplayName="Variavel QualificacaoQSA" sap:VirtualizedContainerService.HintSize="338,166" sap2010:WorkflowViewState.IdRef="NGetText_2" ScopeIdentifier="a54519b3-9420-4894-925b-201add1f44c0" TextString="[QualificacaoQSA]" Version="V3">
+                            <uix:NGetText.Target>
+                              <uix:TargetAnchorable BrowserURL="https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/Cnpjreva_qsa.asp" DesignTimeRectangle="419, 585, 435, 26" DesignTimeScaleFactor="1" ElementType="Text" FriendlyName="'37-Sócio Pessoa'" FullSelectorArgument="&lt;webctrl class='col-md-5' parentid='principal' tag='DIV' /&gt;" FuzzySelectorArgument="&lt;webctrl class='col-md-5' parentid='principal' tag='DIV' type='' /&gt;" Guid="20180e4d-1a05-4816-be15-67e7a802d69e" InformativeScreenshot="2880d8fcd4f5f39f30e4ce18fa6898fa.png" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Consulta Quadro de Sócios e Administradores - QSA' /&gt;" SearchSteps="FuzzySelector" Version="V1" Visibility="Interactive">
+                                <uix:TargetAnchorable.Anchors>
+                                  <scg:List x:TypeArguments="uix:ITarget" Capacity="2">
+                                    <uix:Target DesignTimeRectangle="150, 483, 1060, 26" ElementType="Text" FriendlyName="'O Quadro'" FullSelectorArgument="&lt;webctrl tag='P' /&gt;" FuzzySelectorArgument="&lt;webctrl tag='P' type='' class='' aaname='O Quadro de Sócios e Administradores(QSA) constante da base de dados do Cadastro Nacional da Pessoa Jurídica (CNPJ) é o seguinte:' check:innerText='O Quadro de Sócios e Administradores(QSA) constante da base de dados do Cadastro Nacional da Pessoa' /&gt;" ImageBase64="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" SearchSteps="FuzzySelector, Image" />
+                                    <uix:Target DesignTimeRectangle="158, 585, 261, 26" FriendlyName="'Qualificação'" FullSelectorArgument="&lt;webctrl class='col-md-3' idx='2' parentid='principal' tag='DIV' /&gt;" FuzzySelectorArgument="&lt;webctrl class='col-md-3' type='' parentid='principal' tag='DIV' aaname='' check:innerText='Qualificação:' /&gt;" ImageBase64="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" SearchSteps="FuzzySelector, Image" />
+                                  </scg:List>
+                                </uix:TargetAnchorable.Anchors>
+                              </uix:TargetAnchorable>
+                            </uix:NGetText.Target>
+                          </uix:NGetText>
+                        </Sequence>
+                      </If.Then>
+                      <If.Else>
+                        <Sequence sap:VirtualizedContainerService.HintSize="400,302" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <Assign sap:VirtualizedContainerService.HintSize="338,70" sap2010:WorkflowViewState.IdRef="Assign_1">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:String">[NomeQSA]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:String">Sem Dados</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <Assign sap:VirtualizedContainerService.HintSize="338,70" sap2010:WorkflowViewState.IdRef="Assign_2">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:String">[QualificacaoQSA]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:String">Sem Dados</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                        </Sequence>
+                      </If.Else>
+                    </If>
+                  </Sequence>
+                </ActivityAction>
+              </p:CVScope.Body>
+              <p:CVScope.DesignTimeCache>
+                <uc:CVCache CvUiElements="{x:Null}" OcrTexts="{x:Null}" DataSent="False" />
+              </p:CVScope.DesignTimeCache>
+              <p:CVScope.DesignTimeCacheContainer>
+                <uc:CvCacheContainer>
+                  <uc:CvCacheContainer.Caches>
+                    <scg:List x:TypeArguments="uc:CVCache" Capacity="2">
+                      <uc:CVCache DataSent="False" DisplayName="Screen CV Element Exists - 'CO (Main)" Id="35f796d4-1c05-45cd-b27c-34552a914501" InformativeScreenshot="16c606b9068175501b674457828e5936" LogicalPosition="1702, 60" OcrText="de Inscr X &gt; Inserir REGISTRO em X Thanks For Nothing X SQLite Insert Into - Ins X Ui Transactions - UiPath X Ui Using Find Element W X + v solucoes.receita.fazenda.gov.br/servicos/cnpjreva/Cnpjreva_Comprovante.asp esquisa... Pai Ander manutencao dos C... Ui Queues - UiPath Or... BRASIL Servicos Simplifique! Participe Acesso a informacao Legislacao Canais DENin COMPROVANTE DE INSCRICAO E DE SITUACAO CADASTRAL AV BRIGADEIRO FARIA LIMA 3732 ANDAR 22 E 23 BAIRROIDISTRITO TUNICPIO 04.538-132 ITAIM BIBI SAO PAULO SP ENDERECO ELETRONICO TELEPONE (11) 4810-2170 ENTE FEDERATIVO RESPONSAVEL (EFR) ***** SITLACAO CADSTRAL SITUACAO CADRASTRAL ATIVA 27/11/2019 MOTIVODESITLACOCADASTRAL SITUACAO ESPECIRAL DAIADASITUACAO ESPECIAL ******** ******** Aprovado pela Instrucao Normativa RFB n° 1.863, de 27 de dezembro de 2018. Emitido no dia 25/10/2022 as 22:19:00 (data e hora de Brasilia). Pagina: 1/1 CONSULTAR QSA VOLTAR IMPRIMIR A RFB agradece a sua visita. Para informacoes sobre politica de privacidade e uso, clique aqui." Position="1702, 60" ScreenshotGuid="a4db83d4-515e-47f4-bf29-b930e0867849" ServerVersion="1">
+                        <uc:CVCache.CvAnchorRelations>
+                          <scg:List x:TypeArguments="uc:AnchorRelationInfo" Capacity="16">
+                            <uc:AnchorRelationInfo IsTargetText="True" Target="125">
+                              <uc:AnchorRelationInfo.Anchors>
+                                <x:Array Type="x:Int32">
+                                  <x:Int32>124</x:Int32>
+                                </x:Array>
+                              </uc:AnchorRelationInfo.Anchors>
+                            </uc:AnchorRelationInfo>
+                            <uc:AnchorRelationInfo IsTargetText="False" Target="45">
+                              <uc:AnchorRelationInfo.Anchors>
+                                <x:Array Type="x:Int32">
+                                  <x:Int32>96</x:Int32>
+                                  <x:Int32>97</x:Int32>
+                                </x:Array>
+                              </uc:AnchorRelationInfo.Anchors>
+                            </uc:AnchorRelationInfo>
+                            <uc:AnchorRelationInfo IsTargetText="False" Target="43">
+                              <uc:AnchorRelationInfo.Anchors>
+                                <x:Array Type="x:Int32">
+                                  <x:Int32>82</x:Int32>
+                                  <x:Int32>83</x:Int32>
+                                  <x:Int32>84</x:Int32>
+                                  <x:Int32>85</x:Int32>
+                                </x:Array>
+                              </uc:AnchorRelationInfo.Anchors>
+                            </uc:AnchorRelationInfo>
+                            <uc:AnchorRelationInfo IsTargetText="False" Target="39">
+                              <uc:AnchorRelationInfo.Anchors>
+                                <x:Array Type="x:Int32">
+                                  <x:Int32>89</x:Int32>
+                                  <x:Int32>90</x:Int32>
+                                </x:Array>
+                              </uc:AnchorRelationInfo.Anchors>
+                            </uc:AnchorRelationInfo>
+                            <uc:AnchorRelationInfo IsTargetText="False" Target="35">
+                              <uc:AnchorRelationInfo.Anchors>
+                                <x:Array Type="x:Int32">
+                                  <x:Int32>93</x:Int32>
+                                </x:Array>
+                              </uc:AnchorRelationInfo.Anchors>
+                            </uc:AnchorRelationInfo>
+                            <uc:AnchorRelationInfo IsTargetText="False" Target="27">
+                              <uc:AnchorRelationInfo.Anchors>
+                                <x:Array Type="x:Int32">
+                                  <x:Int32>77</x:Int32>
+                                  <x:Int32>78</x:Int32>
+                                </x:Array>
+                              </uc:AnchorRelationInfo.Anchors>
+                            </uc:AnchorRelationInfo>
+                            <uc:AnchorRelationInfo IsTargetText="False" Target="13">
+                              <uc:AnchorRelationInfo.Anchors>
+                                <x:Array Type="x:Int32">
+                                  <x:Int32>79</x:Int32>
+                                </x:Array>
+                              </uc:AnchorRelationInfo.Anchors>
+                            </uc:AnchorRelationInfo>
+                            <uc:AnchorRelationInfo IsTargetText="False" Target="11">
+                              <uc:AnchorRelationInfo.Anchors>
+                                <x:Array Type="x:Int32">
+                                  <x:Int32>69</x:Int32>
+                                </x:Array>
+                              </uc:AnchorRelationInfo.Anchors>
+                            </uc:AnchorRelationInfo>
+                            <uc:AnchorRelationInfo IsTargetText="False" Target="7">
+                              <uc:AnchorRelationInfo.Anchors>
+                                <x:Array Type="x:Int32">
+                                  <x:Int32>70</x:Int32>
+                                </x:Array>
+                              </uc:AnchorRelationInfo.Anchors>
+                            </uc:AnchorRelationInfo>
+                            <uc:AnchorRelationInfo IsTargetText="False" Target="6">
+                              <uc:AnchorRelationInfo.Anchors>
+                                <x:Array Type="x:Int32">
+                                  <x:Int32>94</x:Int32>
+                                  <x:Int32>95</x:Int32>
+                                </x:Array>
+                              </uc:AnchorRelationInfo.Anchors>
+                            </uc:AnchorRelationInfo>
+                            <uc:AnchorRelationInfo IsTargetText="False" Target="2">
+                              <uc:AnchorRelationInfo.Anchors>
+                                <x:Array Type="x:Int32">
+                                  <x:Int32>87</x:Int32>
+                                  <x:Int32>88</x:Int32>
+                                </x:Array>
+                              </uc:AnchorRelationInfo.Anchors>
+                            </uc:AnchorRelationInfo>
+                          </scg:List>
+                        </uc:CVCache.CvAnchorRelations>
+                        <uc:CVCache.CvUiElements>
+                          <scg:List x:TypeArguments="uc:CvElementInfo" Capacity="128">
+                            <uc:CvElementInfo Category="Button" Region="167, 585, 80, 34" />
+                            <uc:CvElementInfo Category="Button" Region="39, 585, 125, 34" />
+                            <uc:CvElementInfo Category="InputBox" Region="48, 340, 446, 30" />
+                            <uc:CvElementInfo Category="Button" Region="249, 585, 89, 34" />
+                            <uc:CvElementInfo Category="Icon" Region="5, 48, 21, 23" />
+                            <uc:CvElementInfo Category="Button" Region="271, 9, 177, 32" />
+                            <uc:CvElementInfo Category="InputBox" Region="48, 426, 446, 31" />
+                            <uc:CvElementInfo Category="InputBox" Region="370, 214, 243, 31" />
+                            <uc:CvElementInfo Category="Icon" Region="1096, 48, 23, 22" />
+                            <uc:CvElementInfo Category="Icon" Region="1026, 50, 21, 20" />
+                            <uc:CvElementInfo Category="Icon" Region="1058, 49, 22, 21" />
+                            <uc:CvElementInfo Category="InputBox" Region="173, 215, 190, 30" />
+                            <uc:CvElementInfo Category="InputBox" Region="36, 44, 1043, 29" />
+                            <uc:CvElementInfo Category="InputBox" Region="372, 254, 303, 37" />
+                            <uc:CvElementInfo Category="Button" Region="453, 8, 176, 33" />
+                            <uc:CvElementInfo Category="Button" Region="89, 8, 181, 33" />
+                            <uc:CvElementInfo Category="Icon" Region="49, 592, 21, 18" />
+                            <uc:CvElementInfo Category="Icon" Region="48, 50, 15, 18" />
+                            <uc:CvElementInfo Category="Icon" Region="100, 116, 31, 23" />
+                            <uc:CvElementInfo Category="Icon" Region="817, 14, 21, 21" />
+                            <uc:CvElementInfo Category="Icon" Region="339, 82, 19, 19" />
+                            <uc:CvElementInfo Category="Icon" Region="278, 17, 20, 16" />
+                            <uc:CvElementInfo Category="Icon" Region="189, 82, 18, 20" />
+                            <uc:CvElementInfo Category="Button" Region="632, 9, 175, 32" />
+                            <uc:CvElementInfo Category="Icon" Region="1001, 15, 20, 20" />
+                            <uc:CvElementInfo Category="Icon" Region="637, 14, 20, 20" />
+                            <uc:CvElementInfo Category="Icon" Region="457, 14, 20, 20" />
+                            <uc:CvElementInfo Category="InputBox" Region="46, 254, 315, 36" />
+                            <uc:CvElementInfo Category="Icon" Region="96, 17, 20, 16" />
+                            <uc:CvElementInfo Category="Icon" Region="116, 82, 18, 20" />
+                            <uc:CvElementInfo Category="Icon" Region="260, 592, 17, 18" />
+                            <uc:CvElementInfo Category="Button" Region="606, 109, 84, 36" />
+                            <uc:CvElementInfo Category="Button" Region="809, 9, 182, 31" />
+                            <uc:CvElementInfo Category="Icon" Region="61, 82, 17, 20" />
+                            <uc:CvElementInfo Category="CloseButton" Region="244, 17, 16, 16" />
+                            <uc:CvElementInfo Category="InputBox" Region="47, 380, 628, 36" />
+                            <uc:CvElementInfo Category="CloseButton" Region="965, 17, 16, 16" />
+                            <uc:CvElementInfo Category="CloseButton" Region="604, 17, 16, 16" />
+                            <uc:CvElementInfo Category="Icon" Region="1004, 112, 34, 32" />
+                            <uc:CvElementInfo Category="InputBox" Region="504, 340, 170, 31" />
+                            <uc:CvElementInfo Category="CloseButton" Region="63, 16, 17, 17" />
+                            <uc:CvElementInfo Category="CloseButton" Region="785, 17, 16, 16" />
+                            <uc:CvElementInfo Category="CloseButton" Region="424, 16, 17, 16" />
+                            <uc:CvElementInfo Category="InputBox" Region="46, 300, 628, 31" />
+                            <uc:CvElementInfo Category="ArrowButton" Region="1086, 12, 22, 20" />
+                            <uc:CvElementInfo Category="InputBox" Region="505, 426, 168, 30" />
+                            <uc:CvElementInfo Category="Button" Region="507, 109, 99, 35" />
+                            <uc:CvElementInfo Category="Icon" Region="178, 592, 17, 18" />
+                            <uc:CvElementInfo Category="Button" Region="840, 109, 93, 36" />
+                            <uc:CvElementInfo Category="InputBox" Region="372, 181, 65, 23" />
+                            <uc:CvElementInfo Category="InputBox" Region="621, 214, 53, 31" />
+                            <uc:CvElementInfo Category="InputBox" Region="447, 181, 228, 23" />
+                            <uc:CvElementInfo Category="Button" Region="690, 109, 151, 36" />
+                            <uc:CvElementInfo Category="InputBox" Region="46, 214, 116, 31" />
+                            <uc:CvElementInfo Category="Button" Region="931, 109, 70, 35" />
+                            <uc:CvElementInfo Category="InputBox" Region="45, 181, 319, 22" />
+                            <uc:CvElementInfo Category="Icon" Region="1128, 50, 12, 19" />
+                            <uc:CvElementInfo Category="Cell" Region="839, 108, 90, 35" />
+                            <uc:CvElementInfo Category="Cell" Region="688, 107, 151, 34" />
+                            <uc:CvElementInfo Category="Cell" Region="840, 143, 94, 38" />
+                            <uc:CvElementInfo Category="Button" Confidence="Runtime" Region="1, 7, 88, 35" />
+                            <uc:CvElementInfo Category="Button" Confidence="Runtime" Region="47, 214, 115, 31" />
+                            <uc:CvElementInfo Category="Button" Confidence="Runtime" Region="372, 181, 65, 23" />
+                            <uc:CvElementInfo Category="Button" Confidence="Runtime" Region="504, 340, 170, 31" />
+                            <uc:CvElementInfo Category="Button" Confidence="Runtime" Region="621, 214, 54, 31" />
+                            <uc:CvElementInfo Category="Button" Confidence="Runtime" Region="206, 109, 304, 35" />
+                            <uc:CvElementInfo Category="Button" Confidence="Runtime" Region="990, 8, 130, 34" />
+                            <uc:CvElementInfo Category="Button" Confidence="Runtime" Region="1004, 112, 34, 32" />
+                            <uc:CvElementInfo Category="Button" Confidence="Runtime" Region="504, 425, 170, 31" />
+                            <uc:CvElementInfo Category="Icon" Confidence="Runtime" Region="625, 222, 19, 18" />
+                            <uc:CvElementInfo Category="Button" Confidence="Runtime" Region="71, 109, 136, 35" />
+                            <uc:CvElementInfo Category="Icon" Confidence="Runtime" Region="51, 184, 19, 17" />
+                            <uc:CvElementInfo Category="Button" Confidence="Runtime" Region="0, 143, 73, 37" />
+                            <uc:CvElementInfo Category="Cell" Confidence="Runtime" Region="208, 109, 299, 33" />
+                            <uc:CvElementInfo Category="Cell" Confidence="Runtime" Region="932, 109, 69, 35" />
+                            <uc:CvElementInfo Category="Cell" Confidence="Runtime" Region="847, 180, 81, 23" />
+                            <uc:CvElementInfo Category="Cell" Confidence="Runtime" Region="673, 143, 162, 37" />
+                            <uc:CvElementInfo Category="Cell" Confidence="Runtime" Region="843, 179, 72, 53" />
+                            <uc:CvElementInfo Category="Cell" Confidence="Runtime" Region="991, 108, 146, 36" />
+                            <uc:CvElementInfo Category="Cell" Confidence="Runtime" Region="935, 178, 194, 30" />
+                            <uc:CvElementInfo Category="Cell" Confidence="Runtime" Region="1123, 77, 16, 30" />
+                            <uc:CvElementInfo Category="Cell" Confidence="Runtime" Region="509, 109, 94, 34" />
+                          </scg:List>
+                        </uc:CVCache.CvUiElements>
+                        <uc:CVCache.OcrTexts>
+                          <scg:List x:TypeArguments="uc:OcrTextInfo" Capacity="146">
+                            <uc:OcrTextInfo Region="16, 18, 15, 12" Text="de" />
+                            <uc:OcrTextInfo Region="34, 18, 24, 12" Text="Inscr" />
+                            <uc:OcrTextInfo Region="66, 19, 11, 11" Text="X" />
+                            <uc:OcrTextInfo Region="103, 21, 7, 7" Text="&gt;" />
+                            <uc:OcrTextInfo Region="122, 18, 34, 12" Text="Inserir" />
+                            <uc:OcrTextInfo Region="158, 18, 55, 12" Text="REGISTRO" />
+                            <uc:OcrTextInfo Region="214, 20, 18, 10" Text="em" />
+                            <uc:OcrTextInfo Region="247, 19, 11, 10" Text="X" />
+                            <uc:OcrTextInfo Region="302, 18, 40, 12" Text="Thanks" />
+                            <uc:OcrTextInfo Region="343, 18, 19, 12" Text="For" />
+                            <uc:OcrTextInfo Region="364, 18, 44, 15" Text="Nothing" />
+                            <uc:OcrTextInfo Region="427, 19, 11, 10" Text="X" />
+                            <uc:OcrTextInfo Region="482, 18, 37, 13" Text="SQLite" />
+                            <uc:OcrTextInfo Region="521, 18, 31, 12" Text="Insert" />
+                            <uc:OcrTextInfo Region="554, 18, 22, 12" Text="Into" />
+                            <uc:OcrTextInfo Region="577, 21, 7, 7" Text="-" />
+                            <uc:OcrTextInfo Region="586, 18, 15, 11" Text="Ins" />
+                            <uc:OcrTextInfo Region="607, 19, 11, 10" Text="X" />
+                            <uc:OcrTextInfo Region="641, 18, 12, 12" Text="Ui" />
+                            <uc:OcrTextInfo Region="663, 18, 66, 12" Text="Transactions" />
+                            <uc:OcrTextInfo Region="731, 20, 6, 9" Text="-" />
+                            <uc:OcrTextInfo Region="739, 18, 36, 12" Text="UiPath" />
+                            <uc:OcrTextInfo Region="787, 19, 11, 10" Text="X" />
+                            <uc:OcrTextInfo Region="821, 18, 13, 12" Text="Ui" />
+                            <uc:OcrTextInfo Region="843, 18, 31, 15" Text="Using" />
+                            <uc:OcrTextInfo Region="877, 18, 23, 12" Text="Find" />
+                            <uc:OcrTextInfo Region="902, 18, 45, 12" Text="Element" />
+                            <uc:OcrTextInfo Region="948, 20, 11, 9" Text="W" />
+                            <uc:OcrTextInfo Region="967, 19, 11, 10" Text="X" />
+                            <uc:OcrTextInfo Region="1003, 17, 15, 15" Text="+" />
+                            <uc:OcrTextInfo Region="1089, 16, 14, 10" Text="v" />
+                            <uc:OcrTextInfo Region="64, 52, 490, 17" Text="solucoes.receita.fazenda.gov.br/servicos/cnpjreva/Cnpjreva_Comprovante.asp" />
+                            <uc:OcrTextInfo Region="0, 85, 46, 15" Text="esquisa..." />
+                            <uc:OcrTextInfo Region="85, 85, 17, 12" Text="Pai" />
+                            <uc:OcrTextInfo Region="140, 85, 35, 12" Text="Ander" />
+                            <uc:OcrTextInfo Region="214, 85, 67, 15" Text="manutencao" />
+                            <uc:OcrTextInfo Region="282, 85, 22, 12" Text="dos" />
+                            <uc:OcrTextInfo Region="309, 87, 15, 10" Text="C..." />
+                            <uc:OcrTextInfo Region="342, 86, 12, 11" Text="Ui" />
+                            <uc:OcrTextInfo Region="364, 85, 42, 12" Text="Queues" />
+                            <uc:OcrTextInfo Region="408, 88, 5, 8" Text="-" />
+                            <uc:OcrTextInfo Region="416, 85, 35, 12" Text="UiPath" />
+                            <uc:OcrTextInfo Region="453, 85, 24, 12" Text="Or..." />
+                            <uc:OcrTextInfo Region="135, 122, 43, 11" Text="BRASIL" />
+                            <uc:OcrTextInfo Region="222, 120, 60, 16" Text="Servicos" />
+                            <uc:OcrTextInfo Region="520, 120, 73, 15" Text="Simplifique!" />
+                            <uc:OcrTextInfo Region="621, 120, 54, 15" Text="Participe" />
+                            <uc:OcrTextInfo Region="703, 121, 42, 11" Text="Acesso" />
+                            <uc:OcrTextInfo Region="746, 120, 9, 12" Text="a" />
+                            <uc:OcrTextInfo Region="756, 120, 70, 15" Text="informacao" />
+                            <uc:OcrTextInfo Region="855, 120, 62, 15" Text="Legislacao" />
+                            <uc:OcrTextInfo Region="945, 120, 41, 12" Text="Canais" />
+                            <uc:OcrTextInfo Region="0, 154, 38, 14" Text="DENin" />
+                            <uc:OcrTextInfo Region="418, 157, 83, 12" Text="COMPROVANTE" />
+                            <uc:OcrTextInfo Region="501, 157, 15, 12" Text="DE" />
+                            <uc:OcrTextInfo Region="517, 154, 58, 18" Text="INSCRICAO" />
+                            <uc:OcrTextInfo Region="577, 157, 8, 12" Text="E" />
+                            <uc:OcrTextInfo Region="585, 157, 16, 12" Text="DE" />
+                            <uc:OcrTextInfo Region="602, 154, 53, 18" Text="SITUACAO" />
+                            <uc:OcrTextInfo Region="657, 157, 64, 12" Text="CADASTRAL" />
+                            <uc:OcrTextInfo Region="52, 186, 16, 11" Text="AV" />
+                            <uc:OcrTextInfo Region="70, 186, 70, 11" Text="BRIGADEIRO" />
+                            <uc:OcrTextInfo Region="141, 186, 33, 11" Text="FARIA" />
+                            <uc:OcrTextInfo Region="176, 186, 27, 11" Text="LIMA" />
+                            <uc:OcrTextInfo Region="377, 186, 26, 11" Text="3732" />
+                            <uc:OcrTextInfo Region="451, 186, 41, 11" Text="ANDAR" />
+                            <uc:OcrTextInfo Region="493, 186, 14, 11" Text="22" />
+                            <uc:OcrTextInfo Region="509, 186, 8, 11" Text="E" />
+                            <uc:OcrTextInfo Region="519, 186, 13, 11" Text="23" />
+                            <uc:OcrTextInfo Region="174, 215, 75, 9" Text="BAIRROIDISTRITO" />
+                            <uc:OcrTextInfo Region="374, 215, 47, 8" Text="TUNICPIO" />
+                            <uc:OcrTextInfo Region="52, 225, 56, 11" Text="04.538-132" />
+                            <uc:OcrTextInfo Region="178, 225, 30, 11" Text="ITAIM" />
+                            <uc:OcrTextInfo Region="209, 225, 22, 11" Text="BIBI" />
+                            <uc:OcrTextInfo Region="378, 225, 24, 11" Text="SAO" />
+                            <uc:OcrTextInfo Region="404, 225, 38, 11" Text="PAULO" />
+                            <uc:OcrTextInfo Region="628, 225, 15, 11" Text="SP" />
+                            <uc:OcrTextInfo Region="51, 255, 48, 10" Text="ENDERECO" />
+                            <uc:OcrTextInfo Region="100, 255, 54, 9" Text="ELETRONICO" />
+                            <uc:OcrTextInfo Region="374, 255, 47, 8" Text="TELEPONE" />
+                            <uc:OcrTextInfo Region="377, 265, 20, 13" Text="(11)" />
+                            <uc:OcrTextInfo Region="398, 265, 53, 11" Text="4810-2170" />
+                            <uc:OcrTextInfo Region="52, 302, 23, 8" Text="ENTE" />
+                            <uc:OcrTextInfo Region="77, 301, 51, 9" Text="FEDERATIVO" />
+                            <uc:OcrTextInfo Region="129, 301, 61, 9" Text="RESPONSAVEL" />
+                            <uc:OcrTextInfo Region="191, 301, 23, 10" Text="(EFR)" />
+                            <uc:OcrTextInfo Region="53, 311, 22, 7" Text="*****" />
+                            <uc:OcrTextInfo Region="52, 341, 43, 9" Text="SITLACAO" />
+                            <uc:OcrTextInfo Region="95, 341, 51, 9" Text="CADSTRAL" />
+                            <uc:OcrTextInfo Region="546, 340, 42, 11" Text="SITUACAO" />
+                            <uc:OcrTextInfo Region="588, 341, 50, 9" Text="CADRASTRAL" />
+                            <uc:OcrTextInfo Region="52, 351, 33, 11" Text="ATIVA" />
+                            <uc:OcrTextInfo Region="510, 351, 55, 11" Text="27/11/2019" />
+                            <uc:OcrTextInfo Region="50, 381, 144, 10" Text="MOTIVODESITLACOCADASTRAL" />
+                            <uc:OcrTextInfo Region="51, 427, 43, 10" Text="SITUACAO" />
+                            <uc:OcrTextInfo Region="96, 427, 40, 8" Text="ESPECIRAL" />
+                            <uc:OcrTextInfo Region="508, 427, 81, 10" Text="DAIADASITUACAO" />
+                            <uc:OcrTextInfo Region="588, 427, 41, 9" Text="ESPECIAL" />
+                            <uc:OcrTextInfo Region="52, 436, 36, 8" Text="********" />
+                            <uc:OcrTextInfo Region="510, 437, 36, 6" Text="********" />
+                            <uc:OcrTextInfo Region="37, 490, 58, 16" Text="Aprovado" />
+                            <uc:OcrTextInfo Region="98, 490, 25, 16" Text="pela" />
+                            <uc:OcrTextInfo Region="126, 490, 55, 16" Text="Instrucao" />
+                            <uc:OcrTextInfo Region="183, 490, 60, 13" Text="Normativa" />
+                            <uc:OcrTextInfo Region="246, 490, 27, 13" Text="RFB" />
+                            <uc:OcrTextInfo Region="275, 490, 14, 13" Text="n°" />
+                            <uc:OcrTextInfo Region="291, 490, 37, 15" Text="1.863," />
+                            <uc:OcrTextInfo Region="331, 490, 16, 13" Text="de" />
+                            <uc:OcrTextInfo Region="348, 490, 17, 13" Text="27" />
+                            <uc:OcrTextInfo Region="367, 490, 16, 13" Text="de" />
+                            <uc:OcrTextInfo Region="385, 490, 59, 13" Text="dezembro" />
+                            <uc:OcrTextInfo Region="447, 490, 16, 13" Text="de" />
+                            <uc:OcrTextInfo Region="464, 490, 34, 13" Text="2018." />
+                            <uc:OcrTextInfo Region="39, 514, 44, 13" Text="Emitido" />
+                            <uc:OcrTextInfo Region="85, 517, 16, 10" Text="no" />
+                            <uc:OcrTextInfo Region="103, 514, 19, 13" Text="dia" />
+                            <uc:OcrTextInfo Region="124, 514, 67, 13" Text="25/10/2022" />
+                            <uc:OcrTextInfo Region="193, 514, 15, 13" Text="as" />
+                            <uc:OcrTextInfo Region="210, 514, 54, 13" Text="22:19:00" />
+                            <uc:OcrTextInfo Region="266, 514, 31, 16" Text="(data" />
+                            <uc:OcrTextInfo Region="299, 517, 9, 10" Text="e" />
+                            <uc:OcrTextInfo Region="310, 514, 27, 13" Text="hora" />
+                            <uc:OcrTextInfo Region="340, 514, 16, 13" Text="de" />
+                            <uc:OcrTextInfo Region="358, 514, 52, 16" Text="Brasilia)." />
+                            <uc:OcrTextInfo Region="615, 514, 45, 16" Text="Pagina:" />
+                            <uc:OcrTextInfo Region="663, 514, 18, 13" Text="1/1" />
+                            <uc:OcrTextInfo Region="69, 595, 60, 12" Text="CONSULTAR" />
+                            <uc:OcrTextInfo Region="129, 595, 23, 13" Text="QSA" />
+                            <uc:OcrTextInfo Region="194, 595, 40, 12" Text="VOLTAR" />
+                            <uc:OcrTextInfo Region="277, 595, 49, 12" Text="IMPRIMIR" />
+                            <uc:OcrTextInfo Region="38, 647, 10, 13" Text="A" />
+                            <uc:OcrTextInfo Region="50, 647, 24, 13" Text="RFB" />
+                            <uc:OcrTextInfo Region="76, 646, 53, 17" Text="agradece" />
+                            <uc:OcrTextInfo Region="131, 649, 8, 11" Text="a" />
+                            <uc:OcrTextInfo Region="141, 649, 22, 11" Text="sua" />
+                            <uc:OcrTextInfo Region="165, 647, 35, 13" Text="visita." />
+                            <uc:OcrTextInfo Region="203, 647, 27, 13" Text="Para" />
+                            <uc:OcrTextInfo Region="232, 646, 73, 17" Text="informacoes" />
+                            <uc:OcrTextInfo Region="306, 646, 34, 14" Text="sobre" />
+                            <uc:OcrTextInfo Region="342, 646, 43, 17" Text="politica" />
+                            <uc:OcrTextInfo Region="387, 646, 16, 14" Text="de" />
+                            <uc:OcrTextInfo Region="404, 646, 67, 17" Text="privacidade" />
+                            <uc:OcrTextInfo Region="473, 649, 9, 11" Text="e" />
+                            <uc:OcrTextInfo Region="483, 649, 25, 13" Text="uso," />
+                            <uc:OcrTextInfo Region="510, 646, 36, 18" Text="clique" />
+                            <uc:OcrTextInfo Region="548, 647, 28, 16" Text="aqui." />
+                          </scg:List>
+                        </uc:CVCache.OcrTexts>
+                      </uc:CVCache>
+                      <uc:CVCache DataSent="False" DisplayName="Screen CV Element Exists - 'CO" Id="f0d745ef-bd1b-4504-93d3-443e7a2da82f" InformativeScreenshot="2396e52709be0fe3b3bb03c72e0a1fea" LogicalPosition="1702, 60" OcrText="de Inscricao e de S X 00000045.pdf X + v solucoes.receita.fazenda.gov.br/servicos/cnpjreva/Cnpjreva_Comprovante.asp esquisa... Pai Ander manutencao dos C... Ui Queues - UiPath Or... BRASIL Servicos Simplifique! Participe Acesso a informacao Legislacao Canais DENin COMPROVANTE DE INSCRICAO E DE SITUACAO CADASTRAL tmitdo no aia 2O/T02U22 as 20:34:44 (aata e nora ae Brasiila). ragina: T/1 Deseja emitir a Certidao de Baixa? SIM NAO A baixa da inscricao nao implica em atestado de inexistencia de debitos tributarios do contribuinte e nao exime a responsabilidade tributaria dos seus titulares, socios e administradores de debitos porventura existentes. Para verificar a existencia de debitos, efetue &quot;Pesquisa de Situacao Fiscal&quot; do CNPJ, na pagina da Receita Federal do Brasil, pelo endereco: http://www.receita.fazenda.gov.br IMPRIMIR A RFB agradece a sua visita. Para informacoes sobre politica de privacidade e uso, clique aqui." Position="1702, 60" ScreenshotGuid="ebe2ac2c-9541-4539-b79a-20b9591818c2" ServerVersion="1">
+                        <uc:CVCache.CvAnchorRelations>
+                          <scg:List x:TypeArguments="uc:AnchorRelationInfo" Capacity="4">
+                            <uc:AnchorRelationInfo IsTargetText="True" Target="51">
+                              <uc:AnchorRelationInfo.Anchors>
+                                <x:Array Type="x:Int32">
+                                  <x:Int32>50</x:Int32>
+                                </x:Array>
+                              </uc:AnchorRelationInfo.Anchors>
+                            </uc:AnchorRelationInfo>
+                          </scg:List>
+                        </uc:CVCache.CvAnchorRelations>
+                        <uc:CVCache.CvUiElements>
+                          <scg:List x:TypeArguments="uc:CvElementInfo" Capacity="64">
+                            <uc:CvElementInfo Category="Button" Region="61, 275, 47, 33" />
+                            <uc:CvElementInfo Category="Button" Region="148, 8, 238, 33" />
+                            <uc:CvElementInfo Category="InputBox" Region="40, 44, 1047, 30" />
+                            <uc:CvElementInfo Category="Icon" Region="5, 49, 21, 22" />
+                            <uc:CvElementInfo Category="Button" Region="39, 487, 74, 33" />
+                            <uc:CvElementInfo Category="Button" Region="109, 275, 51, 33" />
+                            <uc:CvElementInfo Category="Icon" Region="1058, 49, 22, 21" />
+                            <uc:CvElementInfo Category="Icon" Region="1026, 49, 21, 21" />
+                            <uc:CvElementInfo Category="Icon" Region="100, 116, 31, 24" />
+                            <uc:CvElementInfo Category="Icon" Region="1096, 48, 23, 22" />
+                            <uc:CvElementInfo Category="Icon" Region="48, 51, 15, 18" />
+                            <uc:CvElementInfo Category="Icon" Region="189, 82, 18, 20" />
+                            <uc:CvElementInfo Category="Icon" Region="339, 82, 19, 19" />
+                            <uc:CvElementInfo Category="Button" Region="607, 109, 84, 36" />
+                            <uc:CvElementInfo Category="Icon" Region="396, 15, 20, 20" />
+                            <uc:CvElementInfo Category="Icon" Region="116, 82, 18, 20" />
+                            <uc:CvElementInfo Category="Icon" Region="61, 82, 18, 20" />
+                            <uc:CvElementInfo Category="CloseButton" Region="360, 16, 18, 17" />
+                            <uc:CvElementInfo Category="Icon" Region="155, 15, 19, 19" />
+                            <uc:CvElementInfo Category="Button" Region="1, 8, 145, 33" />
+                            <uc:CvElementInfo Category="CloseButton" Region="121, 16, 16, 16" />
+                            <uc:CvElementInfo Category="Button" Region="507, 109, 99, 36" />
+                            <uc:CvElementInfo Category="Icon" Region="1004, 111, 34, 32" />
+                            <uc:CvElementInfo Category="Button" Region="840, 109, 93, 36" />
+                            <uc:CvElementInfo Category="ArrowButton" Region="1087, 12, 21, 19" />
+                            <uc:CvElementInfo Category="Button" Region="690, 109, 152, 36" />
+                            <uc:CvElementInfo Category="Button" Region="931, 109, 70, 35" />
+                            <uc:CvElementInfo Category="Icon" Region="1128, 50, 12, 19" />
+                            <uc:CvElementInfo Category="Cell" Region="839, 108, 91, 35" />
+                            <uc:CvElementInfo Category="Cell" Region="191, 108, 322, 35" />
+                            <uc:CvElementInfo Category="Cell" Region="687, 107, 152, 34" />
+                            <uc:CvElementInfo Category="Button" Confidence="Runtime" Region="205, 109, 305, 35" />
+                            <uc:CvElementInfo Category="Button" Confidence="Runtime" Region="0, 143, 73, 37" />
+                            <uc:CvElementInfo Category="Button" Confidence="Runtime" Region="1004, 112, 34, 32" />
+                            <uc:CvElementInfo Category="Button" Confidence="Runtime" Region="79, 110, 127, 34" />
+                            <uc:CvElementInfo Category="ArrowButton" Confidence="Runtime" Region="40, 321, 15, 17" />
+                            <uc:CvElementInfo Category="Icon" Confidence="Runtime" Region="42, 323, 13, 14" />
+                            <uc:CvElementInfo Category="Icon" Confidence="Runtime" Region="306, 86, 21, 15" />
+                            <uc:CvElementInfo Category="RadioButton" Confidence="Runtime" Region="40, 323, 14, 15" />
+                            <uc:CvElementInfo Category="Cell" Confidence="Runtime" Region="202, 144, 305, 36" />
+                            <uc:CvElementInfo Category="Cell" Confidence="Runtime" Region="840, 144, 91, 37" />
+                            <uc:CvElementInfo Category="Cell" Confidence="Runtime" Region="616, 178, 231, 32" />
+                            <uc:CvElementInfo Category="Cell" Confidence="Runtime" Region="508, 143, 102, 36" />
+                            <uc:CvElementInfo Category="Cell" Confidence="Runtime" Region="507, 108, 99, 35" />
+                            <uc:CvElementInfo Category="Cell" Confidence="Runtime" Region="932, 109, 71, 35" />
+                            <uc:CvElementInfo Category="Cell" Confidence="Runtime" Region="840, 180, 93, 45" />
+                            <uc:CvElementInfo Category="Cell" Confidence="Runtime" Region="614, 143, 243, 36" />
+                            <uc:CvElementInfo Category="Cell" Confidence="Runtime" Region="603, 109, 87, 35" />
+                            <uc:CvElementInfo Category="Cell" Confidence="Runtime" Region="1123, 77, 16, 30" />
+                            <uc:CvElementInfo Category="Cell" Confidence="Runtime" Region="850, 220, 132, 95" />
+                          </scg:List>
+                        </uc:CVCache.CvUiElements>
+                        <uc:CVCache.OcrTexts>
+                          <scg:List x:TypeArguments="uc:OcrTextInfo" Capacity="131">
+                            <uc:OcrTextInfo Region="16, 18, 15, 12" Text="de" />
+                            <uc:OcrTextInfo Region="33, 18, 48, 15" Text="Inscricao" />
+                            <uc:OcrTextInfo Region="82, 21, 8, 9" Text="e" />
+                            <uc:OcrTextInfo Region="92, 18, 15, 12" Text="de" />
+                            <uc:OcrTextInfo Region="109, 18, 7, 12" Text="S" />
+                            <uc:OcrTextInfo Region="124, 19, 11, 11" Text="X" />
+                            <uc:OcrTextInfo Region="179, 17, 75, 16" Text="00000045.pdf" />
+                            <uc:OcrTextInfo Region="363, 19, 11, 11" Text="X" />
+                            <uc:OcrTextInfo Region="399, 17, 14, 15" Text="+" />
+                            <uc:OcrTextInfo Region="1089, 16, 15, 11" Text="v" />
+                            <uc:OcrTextInfo Region="65, 52, 491, 17" Text="solucoes.receita.fazenda.gov.br/servicos/cnpjreva/Cnpjreva_Comprovante.asp" />
+                            <uc:OcrTextInfo Region="0, 85, 46, 15" Text="esquisa..." />
+                            <uc:OcrTextInfo Region="85, 85, 17, 12" Text="Pai" />
+                            <uc:OcrTextInfo Region="140, 85, 35, 12" Text="Ander" />
+                            <uc:OcrTextInfo Region="214, 85, 67, 15" Text="manutencao" />
+                            <uc:OcrTextInfo Region="282, 85, 22, 12" Text="dos" />
+                            <uc:OcrTextInfo Region="309, 87, 16, 10" Text="C..." />
+                            <uc:OcrTextInfo Region="342, 86, 12, 11" Text="Ui" />
+                            <uc:OcrTextInfo Region="364, 85, 42, 12" Text="Queues" />
+                            <uc:OcrTextInfo Region="408, 88, 5, 8" Text="-" />
+                            <uc:OcrTextInfo Region="416, 85, 35, 12" Text="UiPath" />
+                            <uc:OcrTextInfo Region="453, 85, 24, 12" Text="Or..." />
+                            <uc:OcrTextInfo Region="135, 122, 43, 11" Text="BRASIL" />
+                            <uc:OcrTextInfo Region="222, 120, 60, 16" Text="Servicos" />
+                            <uc:OcrTextInfo Region="520, 120, 73, 15" Text="Simplifique!" />
+                            <uc:OcrTextInfo Region="621, 120, 54, 15" Text="Participe" />
+                            <uc:OcrTextInfo Region="703, 121, 42, 11" Text="Acesso" />
+                            <uc:OcrTextInfo Region="746, 120, 9, 12" Text="a" />
+                            <uc:OcrTextInfo Region="756, 120, 71, 15" Text="informacao" />
+                            <uc:OcrTextInfo Region="855, 120, 62, 15" Text="Legislacao" />
+                            <uc:OcrTextInfo Region="945, 120, 41, 12" Text="Canais" />
+                            <uc:OcrTextInfo Region="0, 154, 38, 14" Text="DENin" />
+                            <uc:OcrTextInfo Region="418, 157, 82, 12" Text="COMPROVANTE" />
+                            <uc:OcrTextInfo Region="501, 157, 15, 12" Text="DE" />
+                            <uc:OcrTextInfo Region="517, 154, 58, 18" Text="INSCRICAO" />
+                            <uc:OcrTextInfo Region="577, 157, 8, 12" Text="E" />
+                            <uc:OcrTextInfo Region="585, 157, 16, 12" Text="DE" />
+                            <uc:OcrTextInfo Region="602, 154, 53, 18" Text="SITUACAO" />
+                            <uc:OcrTextInfo Region="657, 157, 64, 12" Text="CADASTRAL" />
+                            <uc:OcrTextInfo Region="39, 181, 44, 10" Text="tmitdo" />
+                            <uc:OcrTextInfo Region="85, 181, 16, 10" Text="no" />
+                            <uc:OcrTextInfo Region="103, 181, 19, 10" Text="aia" />
+                            <uc:OcrTextInfo Region="124, 181, 68, 10" Text="2O/T02U22" />
+                            <uc:OcrTextInfo Region="193, 181, 15, 10" Text="as" />
+                            <uc:OcrTextInfo Region="210, 181, 54, 10" Text="20:34:44" />
+                            <uc:OcrTextInfo Region="266, 181, 31, 12" Text="(aata" />
+                            <uc:OcrTextInfo Region="299, 181, 9, 10" Text="e" />
+                            <uc:OcrTextInfo Region="310, 181, 27, 10" Text="nora" />
+                            <uc:OcrTextInfo Region="340, 181, 16, 10" Text="ae" />
+                            <uc:OcrTextInfo Region="358, 180, 52, 14" Text="Brasiila)." />
+                            <uc:OcrTextInfo Region="615, 181, 45, 13" Text="ragina:" />
+                            <uc:OcrTextInfo Region="664, 181, 17, 10" Text="T/1" />
+                            <uc:OcrTextInfo Region="62, 242, 50, 21" Text="Deseja" />
+                            <uc:OcrTextInfo Region="114, 243, 45, 16" Text="emitir" />
+                            <uc:OcrTextInfo Region="161, 246, 10, 13" Text="a" />
+                            <uc:OcrTextInfo Region="174, 242, 63, 17" Text="Certidao" />
+                            <uc:OcrTextInfo Region="239, 242, 20, 17" Text="de" />
+                            <uc:OcrTextInfo Region="261, 243, 50, 16" Text="Baixa?" />
+                            <uc:OcrTextInfo Region="75, 284, 20, 12" Text="SIM" />
+                            <uc:OcrTextInfo Region="123, 281, 23, 15" Text="NAO" />
+                            <uc:OcrTextInfo Region="61, 320, 13, 16" Text="A" />
+                            <uc:OcrTextInfo Region="76, 319, 40, 17" Text="baixa" />
+                            <uc:OcrTextInfo Region="118, 319, 19, 17" Text="da" />
+                            <uc:OcrTextInfo Region="140, 319, 67, 21" Text="inscricao" />
+                            <uc:OcrTextInfo Region="209, 320, 28, 16" Text="nao" />
+                            <uc:OcrTextInfo Region="240, 319, 53, 21" Text="implica" />
+                            <uc:OcrTextInfo Region="296, 323, 23, 13" Text="em" />
+                            <uc:OcrTextInfo Region="322, 319, 63, 17" Text="atestado" />
+                            <uc:OcrTextInfo Region="388, 319, 20, 17" Text="de" />
+                            <uc:OcrTextInfo Region="410, 319, 86, 17" Text="inexistencia" />
+                            <uc:OcrTextInfo Region="499, 319, 19, 17" Text="de" />
+                            <uc:OcrTextInfo Region="520, 319, 54, 17" Text="debitos" />
+                            <uc:OcrTextInfo Region="577, 319, 75, 17" Text="tributarios" />
+                            <uc:OcrTextInfo Region="654, 319, 20, 17" Text="do" />
+                            <uc:OcrTextInfo Region="677, 319, 86, 17" Text="contribuinte" />
+                            <uc:OcrTextInfo Region="766, 323, 10, 13" Text="e" />
+                            <uc:OcrTextInfo Region="779, 320, 27, 16" Text="nao" />
+                            <uc:OcrTextInfo Region="809, 319, 44, 17" Text="exime" />
+                            <uc:OcrTextInfo Region="856, 323, 10, 13" Text="a" />
+                            <uc:OcrTextInfo Region="869, 319, 122, 21" Text="responsabilidade" />
+                            <uc:OcrTextInfo Region="993, 319, 67, 17" Text="tributaria" />
+                            <uc:OcrTextInfo Region="61, 345, 28, 17" Text="dos" />
+                            <uc:OcrTextInfo Region="92, 349, 35, 13" Text="seus" />
+                            <uc:OcrTextInfo Region="129, 345, 64, 20" Text="titulares," />
+                            <uc:OcrTextInfo Region="195, 345, 49, 17" Text="socios" />
+                            <uc:OcrTextInfo Region="247, 349, 10, 13" Text="e" />
+                            <uc:OcrTextInfo Region="259, 345, 117, 17" Text="administradores" />
+                            <uc:OcrTextInfo Region="379, 345, 19, 17" Text="de" />
+                            <uc:OcrTextInfo Region="400, 345, 54, 17" Text="debitos" />
+                            <uc:OcrTextInfo Region="457, 347, 77, 19" Text="porventura" />
+                            <uc:OcrTextInfo Region="537, 346, 79, 16" Text="existentes." />
+                            <uc:OcrTextInfo Region="62, 397, 33, 16" Text="Para" />
+                            <uc:OcrTextInfo Region="97, 396, 60, 17" Text="verificar" />
+                            <uc:OcrTextInfo Region="159, 400, 10, 13" Text="a" />
+                            <uc:OcrTextInfo Region="172, 396, 73, 17" Text="existencia" />
+                            <uc:OcrTextInfo Region="248, 396, 19, 17" Text="de" />
+                            <uc:OcrTextInfo Region="269, 396, 58, 20" Text="debitos," />
+                            <uc:OcrTextInfo Region="330, 396, 47, 17" Text="efetue" />
+                            <uc:OcrTextInfo Region="380, 396, 71, 21" Text="&quot;Pesquisa" />
+                            <uc:OcrTextInfo Region="454, 396, 19, 17" Text="de" />
+                            <uc:OcrTextInfo Region="475, 396, 64, 21" Text="Situacao" />
+                            <uc:OcrTextInfo Region="542, 396, 49, 17" Text="Fiscal&quot;" />
+                            <uc:OcrTextInfo Region="593, 396, 20, 17" Text="do" />
+                            <uc:OcrTextInfo Region="616, 397, 43, 19" Text="CNPJ," />
+                            <uc:OcrTextInfo Region="662, 400, 18, 13" Text="na" />
+                            <uc:OcrTextInfo Region="683, 396, 49, 21" Text="pagina" />
+                            <uc:OcrTextInfo Region="735, 396, 19, 17" Text="da" />
+                            <uc:OcrTextInfo Region="757, 396, 54, 17" Text="Receita" />
+                            <uc:OcrTextInfo Region="814, 396, 53, 17" Text="Federal" />
+                            <uc:OcrTextInfo Region="870, 396, 19, 17" Text="do" />
+                            <uc:OcrTextInfo Region="892, 396, 45, 20" Text="Brasil," />
+                            <uc:OcrTextInfo Region="940, 396, 31, 21" Text="pelo" />
+                            <uc:OcrTextInfo Region="974, 396, 72, 21" Text="endereco:" />
+                            <uc:OcrTextInfo Region="61, 422, 245, 21" Text="http://www.receita.fazenda.gov.br" />
+                            <uc:OcrTextInfo Region="51, 496, 49, 12" Text="IMPRIMIR" />
+                            <uc:OcrTextInfo Region="38, 548, 10, 13" Text="A" />
+                            <uc:OcrTextInfo Region="50, 548, 24, 13" Text="RFB" />
+                            <uc:OcrTextInfo Region="76, 547, 53, 17" Text="agradece" />
+                            <uc:OcrTextInfo Region="131, 550, 8, 11" Text="a" />
+                            <uc:OcrTextInfo Region="141, 550, 22, 11" Text="sua" />
+                            <uc:OcrTextInfo Region="165, 547, 35, 14" Text="visita." />
+                            <uc:OcrTextInfo Region="203, 548, 27, 13" Text="Para" />
+                            <uc:OcrTextInfo Region="232, 547, 73, 17" Text="informacoes" />
+                            <uc:OcrTextInfo Region="306, 547, 34, 14" Text="sobre" />
+                            <uc:OcrTextInfo Region="342, 547, 43, 17" Text="politica" />
+                            <uc:OcrTextInfo Region="387, 547, 16, 14" Text="de" />
+                            <uc:OcrTextInfo Region="404, 547, 67, 17" Text="privacidade" />
+                            <uc:OcrTextInfo Region="473, 550, 8, 11" Text="e" />
+                            <uc:OcrTextInfo Region="483, 550, 25, 13" Text="uso," />
+                            <uc:OcrTextInfo Region="510, 547, 36, 17" Text="clique" />
+                            <uc:OcrTextInfo Region="548, 548, 28, 16" Text="aqui." />
+                          </scg:List>
+                        </uc:CVCache.OcrTexts>
+                      </uc:CVCache>
+                    </scg:List>
+                  </uc:CvCacheContainer.Caches>
+                </uc:CvCacheContainer>
+              </p:CVScope.DesignTimeCacheContainer>
+              <p:CVScope.OCREngine>
+                <ActivityFunc x:TypeArguments="sd:Image, scg:IEnumerable(scg:KeyValuePair(sd1:Rectangle, x:String))">
+                  <ActivityFunc.Argument>
+                    <DelegateInArgument x:TypeArguments="sd:Image" Name="Image" />
+                  </ActivityFunc.Argument>
+                  <p1:UiPathScreenOCR ApiKey="{x:Null}" Endpoint="{x:Null}" Output="{x:Null}" PredictionId="{x:Null}" Text="{x:Null}" UseLocalServer="{x:Null}" ComputeSkewAngle="False" ExtractWords="True" sap:VirtualizedContainerService.HintSize="200,32" sap2010:WorkflowViewState.IdRef="UiPathScreenOCR_1" Image="[Image]" Language="en" Profile="Screen" Scale="1" Timeout="100000" />
+                </ActivityFunc>
+              </p:CVScope.OCREngine>
+              <p:CVScope.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="ba509fb2-f002-4ec9-b2f3-235f7846943f" InformativeScreenshot="3c35893576a0110e57aa7e7a00563d03" Selector="&lt;html app='chrome.exe' title='Comprovante de Inscrição e de Situação Cadastral' /&gt;&lt;webctrl css-selector='body&amp;gt;div&amp;gt;div&amp;gt;div&amp;gt;div&amp;gt;div' parentid='app' tag='DIV' /&gt;" WaitForReady="INTERACTIVE">
+                  <ui:Target.TimeoutMS>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:Target.TimeoutMS>
+                </ui:Target>
+              </p:CVScope.Target>
+              <p:CVScope.UseLocalServer>
+                <InArgument x:TypeArguments="x:Boolean" />
+              </p:CVScope.UseLocalServer>
+            </p:CVScope>
+          </Sequence>
+        </ActivityAction>
+      </uix:NApplicationCard.Body>
+      <uix:NApplicationCard.TargetApp>
+        <uix:TargetApp Area="0, 0, 0, 0" />
+      </uix:NApplicationCard.TargetApp>
+    </uix:NApplicationCard>
+    <ui:ExecuteNonQuery AffectedRecords="{x:Null}" ContinueOnError="{x:Null}" TimeoutMS="{x:Null}" CommandType="Text" DisplayName="Run command" ExistingDbConnection="[dbConnection]" sap:VirtualizedContainerService.HintSize="612,98" sap2010:WorkflowViewState.IdRef="ExecuteNonQuery_2" Sql="[&quot;INSERT INTO notaFiscal VALUES('&quot;+in_TransactionItem.SpecificContent(&quot;ID&quot;).ToString+&quot;','&quot;+in_TransactionItem.SpecificContent(&quot;Nome do Prestador&quot;).ToString+&quot;','&quot;+in_TransactionItem.SpecificContent(&quot;N° Nota&quot;).ToString+&quot;','&quot;+in_TransactionItem.SpecificContent(&quot;Data da Emissão&quot;).ToString+&quot;','&quot;+in_TransactionItem.SpecificContent(&quot;CPF/CNPJ&quot;).ToString+&quot;','&quot; +in_TransactionItem.SpecificContent(&quot;Valor Total da Nota&quot;).ToString+&quot;','&quot;+in_TransactionItem.SpecificContent(&quot;Nome do Arquivo&quot;).ToString+&quot;','&quot;+NomeQSA+&quot;','&quot;+QualificacaoQSA+&quot;','&quot;+SituacaoCNPJ+&quot;','&quot;+EtapaAtual+&quot;','&quot;+Status+&quot;','&quot;+Excecao+&quot;')&quot;]">
+      <ui:ExecuteNonQuery.Parameters>
+        <scg:Dictionary x:TypeArguments="x:String, Argument" />
+      </ui:ExecuteNonQuery.Parameters>
+    </ui:ExecuteNonQuery>
+  </Sequence>
+</Activity>

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "LQdilgXvNsJHcysOgpKBXg7iKrXFYcjv9ebRws429sbE727SVAta+51GVktRU2HisRGsf1LnAtPOCnYjvPhQHA==",
+  "dgSpecHash": "iXEIgEeV3V3SbCHcHJGvurpV0Kob6coILEtyLhariutEQjRaW7VoTR4fYQnyzUnjDd5P+PjKXwWJ3hyWgltQ2g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\PC\\Documents\\UiPath\\prj_leituraNf\\Dispatcher NF\\.local\\",
+  "projectFilePath": "C:\\Users\\PC\\Desktop\\prj_leituraNf\\Dispatcher NF\\.local\\",
   "expectedPackageFiles": [
     "C:\\Users\\PC\\.nuget\\packages\\automapper\\9.0.0\\automapper.9.0.0.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\closedxml\\0.95.4\\closedxml.0.95.4.nupkg.sha512",

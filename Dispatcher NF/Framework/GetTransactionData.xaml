@@ -12,7 +12,7 @@
   <VisualBasic.Settings>
     <x:Null />
   </VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1474,2491</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1474,2068</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetTransactionData_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="49">
@@ -136,25 +136,25 @@
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence DisplayName="Get Transaction Data" sap:VirtualizedContainerService.HintSize="592,2426" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Get Transaction Data" sap:VirtualizedContainerService.HintSize="592,2003" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <uix:NApplicationCard AttachMode="ByInstance" DisplayName="Use Application/Browser" sap:VirtualizedContainerService.HintSize="530,2304" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" InUiElement="[OpenGoogle]" ScopeGuid="972f7bf0-6ada-4f34-8c2a-383d759f6997" Version="V2">
+    <uix:NApplicationCard AttachMode="ByInstance" DisplayName="Use Application/Browser" sap:VirtualizedContainerService.HintSize="530,1881" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" InUiElement="[OpenGoogle]" ScopeGuid="972f7bf0-6ada-4f34-8c2a-383d759f6997" Version="V2">
       <uix:NApplicationCard.Body>
         <ActivityAction x:TypeArguments="x:Object">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="496,2158" sap2010:WorkflowViewState.IdRef="Sequence_3">
+          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="496,1735" sap2010:WorkflowViewState.IdRef="Sequence_3">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:ForEachFileX DisplayName="For Each File in Folder" Folder="notasFiscais\.pdf" sap:VirtualizedContainerService.HintSize="434,2034" sap2010:WorkflowViewState.IdRef="ForEachFileX_1" IncludeSubDirectories="False" OrderBy="NameAscFirst" SkipFolderWithoutPermission="False">
+            <ui:ForEachFileX DisplayName="For Each File in Folder" Folder="notasFiscais\.pdf" sap:VirtualizedContainerService.HintSize="434,1611" sap2010:WorkflowViewState.IdRef="ForEachFileX_1" IncludeSubDirectories="False" OrderBy="NameAscFirst" SkipFolderWithoutPermission="False">
               <ui:ForEachFileX.Body>
                 <ActivityAction x:TypeArguments="si:FileInfo, x:Int32">
                   <ActivityAction.Argument1>
@@ -163,7 +163,7 @@
                   <ActivityAction.Argument2>
                     <DelegateInArgument x:TypeArguments="x:Int32" Name="CurrentIndex" />
                   </ActivityAction.Argument2>
-                  <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="400,1771" sap2010:WorkflowViewState.IdRef="Sequence_2">
+                  <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="400,1348" sap2010:WorkflowViewState.IdRef="Sequence_2">
                     <Sequence.Variables>
                       <Variable x:TypeArguments="x:String" Name="ExtractedPdfData" />
                       <Variable x:TypeArguments="x:String" Name="regexNF" />
@@ -198,7 +198,7 @@
                     <ui:Matches BuilderPattern="(?&lt;=Emissão: ).*" DisplayName="regex Data Emissao" sap:VirtualizedContainerService.HintSize="338,69" sap2010:WorkflowViewState.IdRef="Matches_3" Input="[ExtractedPdfData]" IsBuilderTabModified="True" Model="[{&quot;Index&quot;:0,&quot;OperationID&quot;:&quot;LIT&quot;,&quot;OperationName&quot;:&quot;Literal&quot;,&quot;OperationValue&quot;:&quot;(?&lt;=Emissão: ).*&quot;,&quot;QuantifierFirstValue&quot;:&quot;1&quot;,&quot;QuantifierID&quot;:&quot;EXT&quot;,&quot;QuantifierName&quot;:&quot;Exactly&quot;,&quot;QuantifierSecondValue&quot;:null}]" Pattern="(?&lt;=Emissão: ).*" RegexOption="IgnoreCase, Compiled" Result="[Key_Emissao]" />
                     <ui:Matches BuilderPattern="\d{2}.\d{3}.\d{3}.\d{4}.\d{2}" DisplayName="regex CNPJ" sap:VirtualizedContainerService.HintSize="338,69" sap2010:WorkflowViewState.IdRef="Matches_4" Input="[ExtractedPdfData]" IsBuilderTabModified="True" Model="[{&quot;Index&quot;:0,&quot;OperationID&quot;:&quot;LIT&quot;,&quot;OperationName&quot;:&quot;Literal&quot;,&quot;OperationValue&quot;:&quot;\\d{2}.\\d{3}.\\d{3}.\\d{4}.\\d{2}&quot;,&quot;QuantifierFirstValue&quot;:&quot;1&quot;,&quot;QuantifierID&quot;:&quot;EXT&quot;,&quot;QuantifierName&quot;:&quot;Exactly&quot;,&quot;QuantifierSecondValue&quot;:null}]" Pattern="\d{2}.\d{3}.\d{3}.\d{4}.\d{2}" RegexOption="IgnoreCase, Compiled" Result="[Key_CNPJ]" />
                     <ui:Matches BuilderPattern="(?&lt;=(\bda nota.*))((\n).*)" DisplayName="regex ValorTotal" sap:VirtualizedContainerService.HintSize="338,69" sap2010:WorkflowViewState.IdRef="Matches_6" Input="[ExtractedPdfData]" IsBuilderTabModified="True" Model="[{&quot;Index&quot;:0,&quot;OperationID&quot;:&quot;LIT&quot;,&quot;OperationName&quot;:&quot;Literal&quot;,&quot;OperationValue&quot;:&quot;(?&lt;=(\\bda nota.*))((\\n).*)&quot;,&quot;QuantifierFirstValue&quot;:&quot;1&quot;,&quot;QuantifierID&quot;:&quot;EXT&quot;,&quot;QuantifierName&quot;:&quot;Exactly&quot;,&quot;QuantifierSecondValue&quot;:null}]" Pattern="(?&lt;=(\bda nota.*))((\n).*)" RegexOption="IgnoreCase, Compiled" Result="[Key_ValorTotal]" />
-                    <ui:AddQueueItem ServiceBaseAddress="{x:Null}" DisplayName="Add Queue Item" FolderPath="RPA - Projetin" sap:VirtualizedContainerService.HintSize="338,655" sap2010:WorkflowViewState.IdRef="AddQueueItem_1" Priority="Normal" QueueType="NotasFiscais" Reference="[Key_ID.ToString.Substring(0,8)]">
+                    <ui:AddQueueItem ServiceBaseAddress="{x:Null}" DisplayName="Add Queue Item" FolderPath="RPA - Projetin" sap:VirtualizedContainerService.HintSize="338,232" sap2010:WorkflowViewState.IdRef="AddQueueItem_1" Priority="Normal" QueueType="NotasFiscais" Reference="[Key_ID.ToString.Substring(0,8)]">
                       <ui:AddQueueItem.ItemInformation>
                         <InArgument x:TypeArguments="x:String" x:Key="ID">[Key_ID.ToString.Substring(0,8)]</InArgument>
                         <InArgument x:TypeArguments="x:String" x:Key="N° Nota">[Key_NotaNo(0).Value]</InArgument>
@@ -206,6 +206,7 @@
                         <InArgument x:TypeArguments="x:String" x:Key="CPF/CNPJ">[Key_CNPJ(0).Value]</InArgument>
                         <InArgument x:TypeArguments="x:String" x:Key="Data da Emissão">[Key_Emissao(0).Value]</InArgument>
                         <InArgument x:TypeArguments="x:String" x:Key="Valor Total da Nota">[Key_ValorTotal(0).Value]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="Nome do Arquivo">[CurrentFile.Name]</InArgument>
                       </ui:AddQueueItem.ItemInformation>
                       <ui:AddQueueItem.TimeoutMS>
                         <InArgument x:TypeArguments="x:Int32" />
